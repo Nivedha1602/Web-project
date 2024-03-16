@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" >
+    <title>sign up page</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+      min-height: 100vh;
+    background:  linear-gradient(90deg, #FB37FF, #18B2DE);
+    
+}
+
+.wrapper {
+  width: 420px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 02);
+  border-radius: 10px;
+  padding: 30px 40px;
+  color: #fff;
+}
+
+input {
+  margin: 5px;
+  width: 100%;
+  height: 50px;
+  background: none;
+  outline: none;
+  border: 2px solid;
+  border-radius: 40px;
+  padding: 20px 45px 20px 20px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.btn{
+  margin-top: 5px;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  outline: none;
+  border : solid #fff;
+  border-radius: 40px ;
+  font-size: 16px;
+  color: #000;
+  
+}
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color:#000000;
+}
+
+p {
+  text-align: center;
+  margin-top: 10px;
+}
+::placeholder {
+  color: #fff
+}
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  margin: 0;
+  padding-right: 40px; /* Adjust padding to accommodate the eye slash icon */
+}
+
+.password-container i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: red; /* Set the color to red */
+  font-weight: bold;
+}
+
+    </style>
+    
+</head>
+<body>
+  <div class="wrapper">
+  
+                  
+    <form method="post" action="{% url 'signup' %}" >
+      <h1 >Sign Up</h1>
+        {% csrf_token %}
+        <div class="input">
+            <label for="id_name" >Name:</label>
+            {{ form.name }}
+            {% for error in form.name.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="input">
+            <label for="id_project_name">Project Name:</label>
+            {{ form.project_name }}
+            {% for error in form.project_name.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="input">
+          <label for="id_password">Password:</label>
+          <div class="password-container">
+              {{ form.password }}
+              <i class="fas fa-eye-slash toggle-password" aria-hidden="true" id="toggle-password"></i>
+          </div>
+          <div class="input">
+            <label for="id_confirm_password">Confirm Password:</label>
+            <div class="password-container">
+              {{ form.confirm_password }}
+              <i class="fas fa-eye-slash toggle-confirm-password" aria-hidden="true"></i>
+            </div>
+            {% for error in form.confirm_password.errors %}
+              <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+          </div>
+          {% for error in form.password.errors %}
+              <div class="text-danger">{{ error }}</div>
+          {% endfor %}
+      </div>
+      
+        <div class="input">
+            <label id="username-label">Username:</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    <p>If you already signed up, just click <a href="{% url 'login' %}" class="btn btn-link login-btn">Login</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+
+
+<script>
+  if(window.history.replaceState)
+  window.history.replaceState(null,null,window.location.href);
+</script> 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#id_name, #id_project_name').on('input', function() {
+var name = $('#id_name').val();
+var project_name = $('#id_project_name').val();
+$('#username-label').text('Username: ' + name + '@' + project_name).css('font-weight', 'bold');
+
+$('#username-label').css('color', 'black');
+});
+});
+
+
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('.toggle-password').on('click', function() {
+      var passwordField = $('#id_password');
+      var passwordFieldType = passwordField.attr('type');
+      if (passwordFieldType === 'password') {
+        passwordField.attr('type', 'text');
+        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+      } else {
+        passwordField.attr('type', 'password');
+        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+      }
+      // Ensure the focus remains on the password field after clicking the toggle button
+      passwordField.focus();
+    });
+  
+    $('.toggle-confirm-password').on('click', function() {
+      var confirmPasswordField = $('#id_confirm_password');
+      var confirmPasswordFieldType = confirmPasswordField.attr('type');
+      if (confirmPasswordFieldType === 'password') {
+        confirmPasswordField.attr('type', 'text');
+        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+      } else {
+        confirmPasswordField.attr('type', 'password');
+        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+      }
+      // Ensure the focus remains on the confirm password field after clicking the toggle button
+      confirmPasswordField.focus();
+    });
+  });
+  </script>
+  
+<script>
+  $(document).ready(function() {
+      $('form').submit(function(event) {
+          var password = $('#id_password').val();
+          var confirm_password = $('#id_confirm_password').val();
+
+          if (password !== confirm_password) {
+              event.preventDefault();
+              $('#id_confirm_password').next('.text-danger').remove(); // Remove existing error message
+              $('#id_confirm_password').after('<div class="text-danger">The two passwords do not match.</div>'); // Add new error message
+          }
+      });
+  });
+</script>
+</body>
+</html>

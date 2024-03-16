@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+  <style>
+    .nav-tabs {
+        background: linear-gradient(90deg, #FB37FF, #18B2DE);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: auto;
+        min-width: 200px;
+    }
+
+    .tab-pane {
+        background-color: white
+    }
+
+    .nav-tabs .nav-link.active {
+        background: linear-gradient(to left, #FB37FF, #18B2DE);
+        color: white;
+        height: 35px;
+        border-color: none;
+    }
+
+    .nav-tabs .nav-link {
+        line-height: 15px;
+        height: 35px;
+    }
+
+    .nav-tabs :hover {
+        color: black;
+        font-size: 1.5vw;
+    }
+
+    .nav-tabs.nav-link.active:hover {
+        color: #0055AA;
+    }
+
+    :root {
+        --primary-color: #2b7874;
+    }
+
+    .bg-custom-primary {
+        background-color: var(--primary-color);
+    }
+
+    body {
+        background: #fafafaeb;
+    }
+
+    input.form-control {
+        width: 100%;
+        max-width: 15em;
+        border-color: #3F51B5;
+        box-shadow: 0 0 5px rgba(77, 144, 254, 0.5);
+        /* Add box shadow on focus */
+    }
+
+    select.form-select {
+        width: 100%;
+        max-width: 15em;
+        border-color: #3F51B5;
+        box-shadow: 0 0 5px rgba(77, 144, 254, 0.5);
+        /* Add box shadow on focus */
+    }
+
+    .btn-grad1 {
+        background-image: linear-gradient(to right, #4357a4, #00BFFF);
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .btn-grad1:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-grad2 {
+        background-image: linear-gradient(to right, #e53935 0%, #e35d5b 51%, #e53935 100%);
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .btn-grad2:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-grad3 {
+        background-image: linear-gradient(to right, #283048 0%, #859398 70%, #283048 100%);
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .btn-grad3:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-grad4 {
+        background-image: linear-gradient(to right, #093028 0%, #237A57 51%, #093028 100%);
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .btn-grad4:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+    .btn-grad6 {
+        background-image: linear-gradient(to right, #43a1a4, #00ffbf );
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .btn-grad6:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+
+    .btn-grad {
+        background: linear-gradient(0deg, rgba(0, 172, 238, 1) 25%, rgba(2, 126, 251, 1) 50%);
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-position 0.5s;
+    }
+
+    .btn-grad:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-grad:after {
+        font-size: 20px;
+        margin-left: 5px;
+        padding: 1px;
+    }
+
+    .dynamic-form {
+        padding-left: 8px;
+        padding-top: 8px;
+    }
+
+    .btn-grad5 {
+        background-image: linear-gradient(to right, #4357a4, #00BFFF);
+        margin: 10px;
+        padding: 8px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 100% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .btn-grad5:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .grid-container {
+        display: grid;
+        width: 100%;
+        height: 450px;
+        background: rgb(234, 234, 234);
+        position: relative;
+    }
+
+    .grid-item {
+        border: 1px solid #4fc5da;
+        padding: 20px;
+    }
+
+    .draggable-label {
+        position: absolute;
+        padding: 2px;
+        cursor: move;
+        background-color: rgb(255, 255, 255);
+        border-radius: 5px;
+        font-weight: 400;
+        color: black;
+        margin-top: 5px;
+    }
+    /* Mobile devices (portrait and landscape) */
+    @media only screen and (max-width: 768px) {
+        input.form-control,
+        select.form-select {
+            width: 100%; 
+        }
+        .buttons {
+            margin-left: 1rem;
+        }
+        .nav-tabs{
+            width:100%;
+            padding-top:0px;
+        }
+        .form-label{
+            padding-top: 1rem;
+        }
+        .btn-grad{
+            row-gap: 1rem;
+        }
+        .checkboxes{
+            padding-top: 0.2rem;
+        }
+        .nav-tabs .nav-link  {
+            font-size: 0.5rem; 
+        }
+        .nav-tabs .nav-link{
+            line-height: 10px;
+            height:35px;
+        }
+    }
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    /* Adjust styles for tablets and larger devices here */
+        input.form-control,
+        select.form-select {
+            min-width: 50%; 
+        }
+        .form-label{
+            min-width: 50%;
+            padding:1rem;
+        }
+        .btn-grad3{
+            padding-left:0px;
+            width:10%;
+            display:flex;
+            flex-direction: column;
+        }
+        .btn-grad4{
+            padding-left:1rem;
+            display:flex;
+            flex-direction: column;
+        }
+        .btn-grad{
+            row-gap: 1rem;
+        }
+        .checkboxes{
+            padding-top: 0.2rem;
+        }
+        .nav-tabs .nav-link {
+            font-size: 1rem; 
+        }
+        .nav-tabs .nav-link{
+            line-height: 10px;
+            height:35px;
+        }
+    }
+    /* Laptops and desktops */
+    @media only screen and (min-width: 1024px) {
+        input.form-control,
+        select.form-select {
+            width: 25%; 
+        }
+        .form-label{
+            padding-top: 1rem;
+        }
+        .btn-grad{
+            row-gap: 1rem;
+        }
+        .checkboxes{
+            padding-top: 0.2rem;
+        }
+        .nav-tabs .nav-link  {
+            font-size: 2.5rem; 
+        }
+        
+    }
+    
+  </style>
+  <script>
+    function updateLabel(selectBox1) {
+        const formNameLabel = document.querySelector('label[for="fieldname1"]');
+        const selectedValue = selectBox1.value;
+        if (
+          selectedValue === "Select Box" ||  
+          selectedValue === "Varchar Field" ||
+          selectedValue === "Number Field" ||
+          selectedValue === "Password" ||
+          selectedValue === "Select Box" ||
+          selectedValue === "Email" ||
+          selectedValue === "Radio Button" ||
+          selectedValue === "Calc Field" ||
+          selectedValue === "Check Box" ||
+          selectedValue === "Image" ||
+          selectedValue === "Logo" ||
+          selectedValue === "Comment Box" ||
+          selectedValue === "Button" ||
+          selectedValue === "Tables" ||
+          selectedValue === "Video Field" ||
+          selectedValue === "File Field" ||
+          selectedValue === "Audio Field"
+        ) {
+          formNameLabel.textContent = selectBox1.value;
+        } else {
+          formNameLabel.textContent = 'Field Name 1';
+        }
+      }
+      function updateLabel1(selectBox2) {
+        const formId = selectBox2.closest('form').id;
+        const formNameLabel2 = document.querySelector(`label[for="${formId}|field1"]`);
+        const selectedValue2 = selectBox2.value;
+        if (
+            selectedValue2 === "Select Box" ||
+            selectedValue2 === "Varchar Field" ||
+            selectedValue2 === "Number Field" ||
+            selectedValue2 === "Password" ||
+            selectedValue2 === "Select Box" ||
+            selectedValue2 === "Email" ||
+            selectedValue2 === "Radio Button" ||
+            selectedValue2 === "Calc Field" ||
+            selectedValue2 === "Check Box" ||
+            selectedValue2 === "Image" ||
+            selectedValue2 === "Logo" ||
+            selectedValue2 === "Comment Box" ||
+            selectedValue2 === "Button" ||
+            selectedValue2 === "Tables" ||
+            selectedValue2 === "Video Field" ||
+            selectedValue2 === "File Field" ||
+            selectedValue2 === "Audio Field"
+        ) {
+            formNameLabel2.textContent = selectBox2.value;
+        } else {
+            formNameLabel2.textContent = formId;
+        }
+    }
+    // Initialize fieldCounter outside the function
+    let fieldCounters = {}; // Use an object to store field counters for each form
+
+    function updateLabel2(selectBox3) {
+    const selectBoxParent = selectBox3.closest('.dynamic-field');
+    const formId = selectBox3.closest('form').id;
+
+    // Initialize fieldCounter for the form if it doesn't exist
+    if (!fieldCounters[formId]) {
+        fieldCounters[formId] = 2; // Start from 2 for each form
+    }
+
+    const dynamicFields = selectBoxParent.parentNode.querySelectorAll('.dynamic-field');
+
+    dynamicFields.forEach((dynamicField) => {
+        const selectBox = dynamicField.querySelector('select');
+        const formNameLabel = dynamicField.querySelector('label');
+        const fieldCounter = fieldCounters[formId];
+        const newFieldId = `${formId}|field${fieldCounter}`;
+        const fieldName = `Field name ${fieldCounter}`;
+
+        if (selectBox === selectBox3) {
+            const selectedValue = selectBox.value;
+
+            if (
+                selectedValue === "Select Box" ||
+                selectedValue === "Varchar Field" ||
+                selectedValue === "Number Field" ||
+                selectedValue === "Password" ||
+                selectedValue === "Select Box" ||
+                selectedValue === "Email" ||
+                selectedValue === "Radio Button" ||
+                selectedValue === "Calc Field" ||
+                selectedValue === "Check Box" ||
+                selectedValue === "Image" ||
+                selectedValue === "Logo" ||
+                selectedValue === "Comment Box" ||
+                selectedValue === "Button" ||
+                selectedValue === "Tables" ||
+                selectedValue === "Video Field" ||
+                selectedValue === "File Field" ||
+                selectedValue === "Audio Field"
+            ) {
+                formNameLabel.textContent = selectBox.value;
+            } else {
+                formNameLabel.textContent = fieldName;
+            }
+
+            // Increment fieldCounter for the form
+            fieldCounters[formId]++;
+        }
+    });
+}
+
+
+  </script>
+  <title>WebProject Tabs</title>
+</head>
+<body>
+     {% comment %} <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br> {% endcomment %}
+    
+    
+        <div class="bg-custom-primary">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active m-3 px-5 fs-5 text-dark" id="Tab1" data-bs-toggle="tab" href="#tab1Content"><b>Form Content</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link m-3 px-5 fs-5 text-dark" id="Tab2" data-bs-toggle="tab" href="#tab2Content"><b>Alignment</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link m-3 px-5 fs-5 text-dark" id="Tab3" data-bs-toggle="tab" href="#tab3Content"><b>Tab</b></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-3 mx-5 p-2 text-dark">
+            <div class="tab-content mt-4">
+              <div class="tab-pane fade show active" id="tab1Content" role="tabpanel">
+                  <div id="formsContainer">
+                    <div>
+                        <input id="searchInput" type="text" class="form-control mb-3 col-md-6" placeholder="Search..." />
+                        <label for="project_name">Project Name:</label>
+                          <input type="text" id="project_name" name="project_name"> 
+
+                          
+                          <button type="button"  id="fetchDataBtn" class="btn btn-grad6 ms-2 Fetch" style="margin-left:25px;">Fetch Data</button> 
+                          <div id="projectNameAlert" class=" alert-danger" style="display: none;"></div>
+                           
+                        </div>
+                           
+                      <form class="dynamic-form" id="form1">
+                         
+                          <div class="row mb-3">
+                              <div class="col-md-3">
+                                  <label class="form-label">Form</label>
+                                  <div class="input-group">
+                                      <input type="text" class="form-control size" name="form1" placeholder="form1">
+                                  </div>
+                              </div>
+                              <div class="col-md-3">
+                                  <label class="form-label">Redirect path</label>
+                                  <div class="input-group">
+                                      <input type="text" class="form-control size" name= "form1|redirect path" placeholder="form1 Redirect Path">
+                                      <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;"
+                                        type="button"><b>+</b></button>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row mb-3">
+                              <div class="col-md-9 dynamic-field">
+                                  <label class="form-label" for ="fieldname1">Field Name 1</label>
+                                  <label for="fieldType" style="margin-left:290px" class="form-label" id="form-name">Selection Box</label>                                                          
+                                  <div class="input-group">
+                                      <input type="text" class="form-control" name="form1|field1" placeholder="form1 Field name 1">
+                                      <select class="form-select ms-1" id="selectBox1" name="form1|selection1" onchange="updateLabel(this)" >
+                                        <option value="Select Box">Select Box</option>
+                                        <option value="Varchar Field">Varchar Field</option>
+                                        <option value="Number Field">Number Field</option>
+                                        <option value="Password">Password</option>
+                                        
+                                        <option value="Email">Email</option>
+                                        <option value="Radio Button">Radio Button</option>
+                                        <option value="Calc Field">Calc Field</option>
+                                        <option value="Check Box">Check Box</option>
+                                        <option value="Image">Image</option>
+                                        <option value="Logo">Logo</option>
+                                        <option value="Comment Box">Comment Box</option>
+                                        <option value="Button">Button</option>
+                                        <option value="Tables">Tables</option>
+                                        <option value="Video Field">Video Field</option>
+                                        <option value="File Field">File Field</option>
+                                        <option value="Audio Field">Audio Field</option>
+                                      </select>                                    
+                                      <div class="row">
+                                        <div class="col-mb-4">                      
+                                           <input type="hidden" class="checkbox"  name="form1|field1|required"  value="0" >
+                                          <input type="checkbox" class="checkbox" value="1" name="form1|field1|required"  />
+                                          <label for="checkbox1">Required</label>
+                                          <input type="hidden" class="checkbox"  name="form1|field1|readable"  value="0" >
+                                          <input type="checkbox" class="checkbox" name="form1|field1|readable"   >
+                                          <label for="checkbox2">Readable</label> 
+                                          
+                                        </div>
+                                      </div>              
+                                      <button class="btn btn-grad ms-5 add-field"
+                                            style="background-color: #92beab;margin-left:160px;"
+                                            type="button"><b>+</b></button>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="row mb-0">
+                    <div class="col-md-8">
+                        <!-- Submit button -->
+                        <button type="button" id="submitBtn" class="btn btn-grad1"
+                        style="margin-left:10px;">Submit</button>
+                        <button type="button"id="cancelBtn" class="btn btn-grad2 ms-2  cancel-form">Cancel</button>
+                        <button type="button" class="btn btn-grad3 ms-2 Reset" style="margin-left:25px;">Reset</button>
+                        <button type="button" class="btn btn-grad4 ms-2 Preview"
+                        style="margin-left:25px;">Preview</button>
+                          
+                        </div>
+                  </div>
+              </div>
+              <div class="tab-pane fade" id="tab2Content">
+                <div class="grid-container" style="margin-right:100px;">
+                    <div class="grid-item"></div>
+                </div>
+                <button type="button" id="okbtn" style="padding-top:5px;" class="btn btn-grad5">OK</button>
+              </div>
+              <div class="tab-pane fade" id="tab3Content" style="height: 300px;">
+                <div class="container mt-3">
+                  <form id="urlForm">
+                    <div class="row justify-content-center">
+                      <div class="col-md-6">
+                        <label for="urlInput" class="form-label">URL</label>
+                        <input type="text" class="form-control" id="urlInput" placeholder="Enter URL">
+                      </div>
+                      
+                    </div>
+                    <div class="row mt-3 justify-content-center">
+                      <div class="col-md-6">
+                        <button type="submit" class="btn btn-grad1">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="row mt-3 justify-content-center">
+                    <div class="col-md-6">
+                      <label for="commentBox" class="form-label">Comment</label>
+                      <textarea class="form-control resizable" id="commentBox" rows="4" placeholder="Enter your comment"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      
+          
+      
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+           
+            
+        $(document).ready(function () {
+            var formCounter = 1;
+            function generateFormHtml(formId) {
+                return `
+                    <form class="dynamic-form" id="${formId}">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="${formId}-forms" class="form-label">${formId}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control size" id="${formId}-forms"  name="${formId}" placeholder="${formId}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="${formId}-redirect" class="form-label">${formId}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control size" id="${formId}-redirect path" name="${formId}|redirect path"  placeholder="${formId} Redirect Path">
+                                    <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;row-gap: 1rem;" type="button">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-9 dynamic-field">
+                                <label for="${formId}|field1" class="form-label">${formId}</label>
+                                <label for="fieldType" style="margin-left:230px" id="form-name">Selection Box</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control size" id="${formId}-field" name="${formId}|field1" placeholder="${formId} Field Name 1">
+                                    <select class="form-select ms-1" id="selectBox2" onchange="updateLabel1(this)" name="${formId}|selection1">
+                                      <option value="Select Box">Select Box</option>
+                                      <option value="Varchar Field">Varchar Field</option>
+                                      <option value="Number Field">Number Field</option>
+                                      <option value="Password">Password</option>
+                                      <option value="Select Box">Select Box</option>
+                                      
+                                      <option value="Email">Email</option>
+                                      <option value="Radio Button">Radio Button</option>
+                                      <option value="Calc Field">Calc Field</option>
+                                      <option value="Check Box">Check Box</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Logo">Logo</option>
+                                      <option value="Comment Box">Comment Box</option>
+                                      <option value="Button">Button</option>
+                                      <option value="Tables">Tables</option>
+                                      <option value="Video Field">Video Field</option>
+                                      <option value="File Field">File Field</option>
+                                      <option value="Audio Field">Audio Field</option>
+                                        <!-- Add other options as needed -->
+                                    </select>
+                                    <div class="row">
+                                      <div class="col-mb-4">                  
+                                        <input type="hidden" class="checkbox"  name="${formId}|field1|required"  value="0" >
+                                          <input type="checkbox" class="checkbox" value="1"  name="${formId}|field1|required"  >
+                                          <label for="checkbox1">Required</label>
+                                          <input type="hidden" class="checkbox"   name="${formId}|field1|readable" value="0" >
+                                          <input type="checkbox" class="checkbox"  name="${formId}|field1|readable" value="1" >
+                                          <label for="checkbox2">Readable</label>
+                                      </div>
+                                    </div>      
+                                    <button class="btn btn-grad ms-5 add-field" style="background-color: #92beab;margin-left:500px;" type="button">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                `;
+            }
+
+            function addForm() {
+                var newFormId = getNextFormNumber();
+                var newFormHtml = generateFormHtml(newFormId);
+                var newForm = $(newFormHtml);
+                newForm.find('.add-form').removeClass('add-form').addClass('remove-form').html('-');
+                newForm.find('input[type="text"]').val('');
+                newForm.find('.form-label').each(function (index) {
+                    var labelType = index === 0 ? '' : (index === 1 ? 'Redirect path' : 'Field Name');
+                    $(this).text(`${newFormId}  ${labelType} `);
+                });
+                $('#formsContainer').append(newForm);
+            }
+
+            function removeForm() {
+                $(this).closest(".dynamic-form").remove();
+            }
+            $("#formsContainer").on("click", ".add-form", addForm);
+            $("#formsContainer").on("click", ".remove-form", removeForm);
+           
+            function addField(formId, fieldCounter) {
+                
+                var newFieldId = "field" + fieldCounter;
+                var fieldName = `${formId}|field${fieldCounter}`;
+            
+                // Check if the field name already exists
+                while ($(`[name="${fieldName}"]`).length > 0) {
+                    fieldCounter++;
+                    newFieldId = "field" + fieldCounter;
+                    fieldName = `${formId}|field${fieldCounter}`;
+                }
+                
+                
+                var newField = `
+                    <div class="row mb-3">
+                        <div class="col-md-9 dynamic-field">
+                            <label for="${formId}|field${fieldCounter}" class="form-label">Field name ${fieldCounter} </label>
+                            <label for="${newFieldId}" style="margin-left:270px" id="form-name">Selection Box  ${fieldCounter}</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control size" id="${formId}-${newFieldId}" name="${formId}|field${fieldCounter}" placeholder="${formId} Field name ${fieldCounter}">
+                                <select class="form-select ms-1" id="selectBox3" onchange="updateLabel2(this)" name="${formId}|selection${fieldCounter}" >
+                                  <option value="Select Box">Select Box</option>
+                                  <option value="Varchar Field">Varchar Field</option>
+                                  <option value="Number Field">Number Field</option>
+                                  <option value="Password">Password</option>
+                                  
+                                  
+                                  <option value="Email">Email</option>
+                                  <option value="Radio Button">Radio Button</option>
+                                  <option value="Calc Field">Calc Field</option>
+                                  <option value="Check Box">Check Box</option>
+                                  <option value="Image">Image</option>
+                                  <option value="Logo">Logo</option>
+                                  <option value="Comment Box">Comment Box</option>
+                                  <option value="Button">Button</option>
+                                  <option value="Tables">Tables</option>
+                                  <option value="Video Field">Video Field</option>
+                                  <option value="File Field">File Field</option>
+                                  <option value="Audio Field">Audio Field</option>
+                                    <!-- Add other options as needed -->
+                                </select>
+                                <div class="row">
+                                  <div class="col-mb-4">              
+                                    <input type="hidden" class="checkbox-${formId}"  name="${formId}|field${fieldCounter}|required"  value="0" />
+                                          <input type="checkbox" class="checkbox-${formId}" value="1"  name="${formId}|field${fieldCounter}|required"  />
+                                          <label for="checkbox1">Required</label>
+                                          <input type="hidden" class="checkbox-${formId}"   name="${formId}|field${fieldCounter}|readable" value="0" />
+                                          <input type="checkbox" class="checkbox-${formId}"  name="${formId}|field${fieldCounter}|readable"value="1"  />
+                                          <label for="checkbox2">Readable</label>
+                                  </div>
+                                </div>      
+                                <button class="btn btn-danger ms-5 remove-field" name="removebutton" type="button" style:"margin-left:500px;">-</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('#' + formId).append(newField);
+                
+            }
+ 
+            function removeField() {
+                $(this).closest(".row").remove();
+            }
+            
+
+            $("#formsContainer").on("click", ".add-field", function () {
+                var formId = $(this).closest('.dynamic-form').attr('id');
+                var fieldCounter = $('#' + formId).find('.dynamic-field').length + 1;
+                addField(formId, fieldCounter);
+            });
+
+            $("#formsContainer").on("click", ".remove-field", removeField);
+
+            function getNextFormNumber() {
+                var existingFormIds = $('.dynamic-form').map(function () {
+                    return parseInt(this.id.replace('form', ''), 10);
+                }).get();
+
+                if (existingFormIds.length === 0) {
+                    return 'form2';
+                }
+
+                var maxFormId = Math.max.apply(null, existingFormIds);
+                return 'form' + (maxFormId + 1);
+            }
+            $(document).ready(function () {
+    // Store default state of form1 when page loads
+    var defaultFormState = $('#form1').clone();
+
+    // Reset button click event
+    $('.Reset').click(function () {
+        // Remove additional forms except the first one (form1)
+        $('.dynamic-form').not('#form1').remove();
+
+        // Replace content of form1 with default state
+        $('#form1').replaceWith(defaultFormState.clone());
+
+        // Reset labels to their default state
+        $('.dynamic-form:first .form-label').each(function () {
+            var fieldName = $(this).attr('for');
+            var defaultLabel = fieldName.split('|')[1]; // Extract default label from field name
+            $(this).text(defaultLabel);
+        });
+
+        // Reset select boxes to their default state
+        $('.dynamic-form:first select').each(function () {
+            $(this).val($(this).find('option:first').val()); // Set to first option
+        });
+
+        // Clear project name and hide alert
+        $('#project_name').val('');
+        $('#projectNameAlert').hide();
+    });
+});
+                       $(document).ready(function () {
+                $('#tab1Content').on('focusout', '#project_name', function (event) {
+                    // Check if the related target is not the reset button or the cancel button
+                    if (!$(event.relatedTarget).hasClass('Reset') && !$(event.relatedTarget).hasClass('Fetch') && !$(event.relatedTarget).hasClass('cancel-form')) {
+                        var projectName = $(this).val();
+                        if (projectName.trim() === '') {
+                            $('#projectNameAlert').text('Project name cannot be empty.').show();
+                            return; // Stop further execution
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '/check_project_name/',
+                            data: {
+                                'project_name': projectName,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function (response) {
+                                if (response.exists) {
+                                    $('#projectNameAlert').text('Project name already exists. Please choose a different name.').show();
+                                } else {
+                                    $('#projectNameAlert').hide();
+                                }
+                            },
+                            error: function () {
+                                console.error('Failed to check project name.');
+                            }
+                        });
+                    }
+                });
+                $('#submitBtn').on('click', function () {
+                    // Check if the project name is empty
+                    /*if ($('#project_name').val().trim() === '') {
+                        alert('Project name cannot be empty.');
+                        return; // Stop further execution
+                    }*/
+                    if ($('#project_name').val().trim() === '') {
+                        $('#projectNameAlert').text('Project name cannot be empty.').show();
+                        return; // Stop further execution
+                    } 
+            
+                    // Set checkbox values to 0 for unselected and 1 for selected
+                    $('.checkbox').each(function () {
+                        $(this).val(this.checked ? 1 : 0);
+                    });
+            
+                    // Serialize form data into an array of objects
+                    var formDataArray = $('form').serializeArray();
+                    var project_name = $('#project_name').val();
+                    // Convert the array of objects into a JSON object
+                    var formDataJSON = {};
+                    $.each(formDataArray, function (index, field) {
+                        formDataJSON[field.name] = field.value;
+                    });
+                    formDataJSON['project_name'] = project_name;
+            
+                    // Send AJAX request to submit form data
+                    $.ajax({
+                        type: 'POST',
+                        url: '/submit_form_data/',
+                        data: formDataJSON,
+                        success: function (formResponse) {
+                            if (formResponse.success) {
+                                console.log('Form data submitted successfully!');
+                                console.log(formDataJSON);
+                                alert("Form data submitted successfully!");
+            
+                                // Reset the form
+                                
+                                $('form :input:not("#urlInput")').val('');
+                                $('form :checkbox').prop('checked', false);
+                                $('form select').prop('selectedIndex', 0);
+                                $('#project_name').val('');
+                                $('#projectNameAlert').hide();
+                                
+                            } else {
+                                console.error('Failed to submit form data.');
+                                if (formResponse.error === 'Project name already exists') {
+                                    $('#projectNameAlert').text('Project name already exists. Please choose a different name.');
+                                    $('#projectNameAlert').show();
+                                } else {
+                                    alert("Failed to submit form data.");
+                                }
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error: " + textStatus, errorThrown);
+                            alert("Failed to submit form data.");
+                        }
+                    });
+                });
+            });
+        
+        $(document).ready(function () {
+    $('#fetchDataBtn').on('click', function () {
+        var projectName = $('#project_name').val();
+        
+        
+        $.ajax({
+            type: 'GET',
+            url: '/fetch_data/',  // Endpoint to fetch data
+            success: function (response) {
+                if (response.form_data && response.field_data && response.project) {
+
+                    $.each(response.project, function (index,project){
+                        if (project.name==projectName){
+                            $.each(response.form_data, function (index, formData) {
+                                if (formData.project_id ==project.id){
+                                    $(`input[name="${formData.form_key}"]`).val(formData.forms_name);
+                                    $(`input[name="${formData.form_key}|redirect path"]`).val(formData.Rediretpath_name);
+                                    console.log("hari")
+                                    }
+                                });
+                           
+
+                            }
+                        });
+                    $.each(response.project, function (index,project){
+                        if (project.name==projectName){
+                            $.each(response.field_data, function (index, fieldData) {
+                                if (fieldData.project_id ==project.id){
+                                   $(`input[name="${fieldData.field_key}"]`).val(fieldData.field_value);
+                                   let temp= fieldData.field_key;
+                                   var str = fieldData.field_key;
+                                   var replacedStr = str.replace("field", "selection");
+                                   $(`select[name="${replacedStr}"]`).val(fieldData.selection_value);
+                                                // console.log('hari',fieldData.selection_value)
+                                    if (fieldData.required) {
+                                        $(`input[name="${temp}|required"]`).prop('checked', true);
+                                            console.log('fieldData.required',fieldData.required)
+                                    }
+                                    if (fieldData.readable) {
+                                        $(`input[name="${temp}|readable"]`).prop('checked', true);
+                                        console.log('fieldData.readable',fieldData.readable)
+                                    }
+                                }
+                                   console.log("hari")
+                                    
+                                });
+                           
+
+                            }
+                        });    
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error: " + textStatus, errorThrown);
+                alert("Failed to fetch data.");
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    $('#cancelBtn').on('click', function () {
+        var projectName = $('#project_name').val();
+        
+        $.ajax({
+            type: 'POST',
+            url: '/delete_data/',
+            data: {
+                'project_name': projectName,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert('Project data deleted successfully.');
+                    // Reset the form, hide the alert, and clear project name
+                    $('form').trigger('reset');
+                    $('#projectNameAlert').hide();
+                    $('#project_name').val(''); // Reset project name
+                } else {
+                    alert('Failed to delete project data: ' + response.message);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error: " + textStatus, errorThrown);
+                alert("Failed to delete project data.");
+            }
+        });
+    });
+});
+
+$("#searchInput").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $(".dynamic-form").filter(function () {
+    $(this).toggle($(this).attr('id').toLowerCase().indexOf(value) > -1)
+    });
+});
+
+$(document).ready(function () {
+        
+        $('#urlForm').submit(function (event) {
+            event.preventDefault(); 
+           
+            var url = $('#urlInput').val();
+            
+            
+            if (!url.trim()) {
+                alert('Please enter a URL.');
+                return; // Exit the function if URL is empty
+            }
+            
+            
+            $.get(url, function (data) {
+                
+                if (typeof data === 'object') {
+                    
+                    var jsonString = JSON.stringify(data);
+                    
+                    $('#commentBox').val(jsonString);
+                } else {
+                    
+                    $('#commentBox').val(data);
+                }
+            }).fail(function () {
+                
+                $('#commentBox').val('Failed to fetch data from the URL.');
+            });
+        });
+    });
+}); 
+
+
+      
+      
+
+
+</script>
+</body>
+</html>
+
+   
