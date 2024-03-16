@@ -586,6 +586,7 @@
       
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
            
             
@@ -762,34 +763,34 @@
                 return 'form' + (maxFormId + 1);
             }
             $(document).ready(function () {
-    // Store default state of form1 when page loads
-    var defaultFormState = $('#form1').clone();
+    
+                var defaultFormState = $('#form1').clone();
 
-    // Reset button click event
-    $('.Reset').click(function () {
-        // Remove additional forms except the first one (form1)
-        $('.dynamic-form').not('#form1').remove();
+            
+                $('.Reset').click(function () {
+                    
+                    $('.dynamic-form').not('#form1').remove();
 
-        // Replace content of form1 with default state
-        $('#form1').replaceWith(defaultFormState.clone());
+                    
+                    $('#form1').replaceWith(defaultFormState.clone());
 
-        // Reset labels to their default state
-        $('.dynamic-form:first .form-label').each(function () {
-            var fieldName = $(this).attr('for');
-            var defaultLabel = fieldName.split('|')[1]; // Extract default label from field name
-            $(this).text(defaultLabel);
-        });
+                    
+                    $('.dynamic-form:first .form-label').each(function () {
+                        var fieldName = $(this).attr('for');
+                        var defaultLabel = fieldName.split('|')[1]; 
+                        $(this).text(defaultLabel);
+                    });
 
-        // Reset select boxes to their default state
-        $('.dynamic-form:first select').each(function () {
-            $(this).val($(this).find('option:first').val()); // Set to first option
-        });
+                
+                    $('.dynamic-form:first select').each(function () {
+                        $(this).val($(this).find('option:first').val()); 
+                    });
 
-        // Clear project name and hide alert
-        $('#project_name').val('');
-        $('#projectNameAlert').hide();
-    });
-});
+                    
+                    $('#project_name').val('');
+                    $('#projectNameAlert').hide();
+                });
+            });
                        $(document).ready(function () {
                 $('#tab1Content').on('focusout', '#project_name', function (event) {
                     // Check if the related target is not the reset button or the cancel button
@@ -883,134 +884,366 @@
             });
         
         $(document).ready(function () {
-    $('#fetchDataBtn').on('click', function () {
-        var projectName = $('#project_name').val();
-        
-        
-        $.ajax({
-            type: 'GET',
-            url: '/fetch_data/',  // Endpoint to fetch data
-            success: function (response) {
-                if (response.form_data && response.field_data && response.project) {
+        $('#fetchDataBtn').on('click', function () {
+            var projectName = $('#project_name').val();
+            
+            
+            $.ajax({
+                type: 'GET',
+                url: '/fetch_data/',  // Endpoint to fetch data
+                success: function (response) {
+                    if (response.form_data && response.field_data && response.project) {
 
-                    $.each(response.project, function (index,project){
-                        if (project.name==projectName){
-                            $.each(response.form_data, function (index, formData) {
-                                if (formData.project_id ==project.id){
-                                    $(`input[name="${formData.form_key}"]`).val(formData.forms_name);
-                                    $(`input[name="${formData.form_key}|redirect path"]`).val(formData.Rediretpath_name);
-                                    console.log("hari")
-                                    }
-                                });
-                           
+                        $.each(response.project, function (index,project){
+                            if (project.name==projectName){
+                                $.each(response.form_data, function (index, formData) {
+                                    if (formData.project_id ==project.id){
+                                        $(`input[name="${formData.form_key}"]`).val(formData.forms_name);
+                                        $(`input[name="${formData.form_key}|redirect path"]`).val(formData.Rediretpath_name);
+                                        console.log("hari")
+                                        }
+                                    });
+                            
 
-                            }
-                        });
-                    $.each(response.project, function (index,project){
-                        if (project.name==projectName){
-                            $.each(response.field_data, function (index, fieldData) {
-                                if (fieldData.project_id ==project.id){
-                                   $(`input[name="${fieldData.field_key}"]`).val(fieldData.field_value);
-                                   let temp= fieldData.field_key;
-                                   var str = fieldData.field_key;
-                                   var replacedStr = str.replace("field", "selection");
-                                   $(`select[name="${replacedStr}"]`).val(fieldData.selection_value);
-                                                // console.log('hari',fieldData.selection_value)
-                                    if (fieldData.required) {
-                                        $(`input[name="${temp}|required"]`).prop('checked', true);
-                                            console.log('fieldData.required',fieldData.required)
-                                    }
-                                    if (fieldData.readable) {
-                                        $(`input[name="${temp}|readable"]`).prop('checked', true);
-                                        console.log('fieldData.readable',fieldData.readable)
-                                    }
                                 }
-                                   console.log("hari")
-                                    
-                                });
-                           
+                            });
+                        $.each(response.project, function (index,project){
+                            if (project.name==projectName){
+                                $.each(response.field_data, function (index, fieldData) {
+                                    if (fieldData.project_id ==project.id){
+                                    $(`input[name="${fieldData.field_key}"]`).val(fieldData.field_value);
+                                    let temp= fieldData.field_key;
+                                    var str = fieldData.field_key;
+                                    var replacedStr = str.replace("field", "selection");
+                                    $(`select[name="${replacedStr}"]`).val(fieldData.selection_value);
+                                                    // console.log('hari',fieldData.selection_value)
+                                        if (fieldData.required) {
+                                            $(`input[name="${temp}|required"]`).prop('checked', true);
+                                                console.log('fieldData.required',fieldData.required)
+                                        }
+                                        if (fieldData.readable) {
+                                            $(`input[name="${temp}|readable"]`).prop('checked', true);
+                                            console.log('fieldData.readable',fieldData.readable)
+                                        }
+                                    }
+                                    console.log("hari")
+                                        
+                                    });
+                            
 
-                            }
-                        });    
+                                }
+                            });    
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error: " + textStatus, errorThrown);
+                    alert("Failed to fetch data.");
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("AJAX Error: " + textStatus, errorThrown);
-                alert("Failed to fetch data.");
-            }
-        });
-    });
-});
-
-$(document).ready(function () {
-    $('#cancelBtn').on('click', function () {
-        var projectName = $('#project_name').val();
-        
-        $.ajax({
-            type: 'POST',
-            url: '/delete_data/',
-            data: {
-                'project_name': projectName,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function (response) {
-                if (response.success) {
-                    alert('Project data deleted successfully.');
-                    // Reset the form, hide the alert, and clear project name
-                    $('form').trigger('reset');
-                    $('#projectNameAlert').hide();
-                    $('#project_name').val(''); // Reset project name
-                } else {
-                    alert('Failed to delete project data: ' + response.message);
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("AJAX Error: " + textStatus, errorThrown);
-                alert("Failed to delete project data.");
-            }
-        });
-    });
-});
-
-$("#searchInput").on("keyup", function () {
-    var value = $(this).val().toLowerCase();
-    $(".dynamic-form").filter(function () {
-    $(this).toggle($(this).attr('id').toLowerCase().indexOf(value) > -1)
-    });
-});
-
-$(document).ready(function () {
-        
-        $('#urlForm').submit(function (event) {
-            event.preventDefault(); 
-           
-            var url = $('#urlInput').val();
-            
-            
-            if (!url.trim()) {
-                alert('Please enter a URL.');
-                return; // Exit the function if URL is empty
-            }
-            
-            
-            $.get(url, function (data) {
-                
-                if (typeof data === 'object') {
-                    
-                    var jsonString = JSON.stringify(data);
-                    
-                    $('#commentBox').val(jsonString);
-                } else {
-                    
-                    $('#commentBox').val(data);
-                }
-            }).fail(function () {
-                
-                $('#commentBox').val('Failed to fetch data from the URL.');
             });
         });
     });
-}); 
+
+    $(document).ready(function () {
+        $('#cancelBtn').on('click', function () {
+            var projectName = $('#project_name').val();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/delete_data/',
+                data: {
+                    'project_name': projectName,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Project data deleted successfully.');
+                        // Reset the form, hide the alert, and clear project name
+                        $('form').trigger('reset');
+                        $('#projectNameAlert').hide();
+                        $('#project_name').val(''); // Reset project name
+                    } else {
+                        alert('Failed to delete project data: ' + response.message);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error: " + textStatus, errorThrown);
+                    alert("Failed to delete project data.");
+                }
+            });
+        });
+    });
+
+    $("#searchInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $(".dynamic-form").filter(function () {
+        $(this).toggle($(this).attr('id').toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $(document).ready(function () {
+            var formCounter = 1;
+            var draggableData = [];
+            var paddingChangeInterval = 5;
+            var maxPadding = 50; // Maximum padding size
+            var paddingChangeTimer; // Timer for padding change interval
+        
+            function previewFormValues() {
+                if ($(this).hasClass('Preview')) {
+                    $("#Tab2").tab("show");
+                }
+        
+                $(".grid-item").empty();
+                var totalHeight = 0;
+        
+                $(".dynamic-form").each(function (formIndex, form) {
+                    var formId = $(form).attr("id");
+                    var formName = $(form).find('input[name="' + formId + '"]').val().trim();
+                    
+        
+                    // Add form details to draggableData array
+                    var formIdString = "form" + formCounter;
+                    draggableData.push({
+                        id: formIdString,
+                        formname: formName,
+                        posX: null,
+                        posY: null,
+                        padding: null,
+                        backgroundColor: null
+                    });
+                    
+                    // Display form name
+                    var formNameHtml = '<div class="form-name draggable-label" id="' + formIdString + '" style="padding: 10px; background-color: lightblue;">' + formName + '</div>';
+                    $(".grid-item").append(formNameHtml);
+                    totalHeight += 40;
+        
+                    $(form).find('.dynamic-field').each(function () {
+                        var fieldName = $(this).find('input[type="text"]').val().trim();
+                        if (fieldName !== "") {
+                            var fieldId = "field" + "name" + formCounter;
+                            var fieldValueHtml =
+                                '<div class="draggable-label form-fieldname" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                                totalHeight +
+                                'px; padding: 10px; background-color: lightblue;"><label>' +
+                                fieldName +
+                                "</label></div>";
+                            $(".grid-item").append(fieldValueHtml);
+                            totalHeight += 40;
+        
+                            // Add field name details to draggableData array
+                            draggableData.push({
+                                id: fieldId,
+                                formname: formName,
+                                fieldname: fieldName,
+                                fieldtype: "",
+                                posX: null,
+                                posY: null,
+                                padding: 10,
+                                backgroundColor: "lightblue"
+                            });
+                        }
+                    });
+        
+                    $(form).find('select').each(function () {
+                        var selectedFieldType = $(this).val().trim();
+                        if (selectedFieldType !== "") {
+                            var inputField = '';
+        
+                            // code for creating inputField...
+                            if (selectedFieldType === "Varchar Field") {
+                                inputField = '<input type="text" class="form-control" placeholder="Varchar Field" readonly ' + 'style="width: 200px;">';
+                            } else if (selectedFieldType === "Number Field") {
+                                inputField = '<input type="number" class="form-control" placeholder="Number Field" readonly ' + 'style="width: 200px;">';
+                            } else if (selectedFieldType === "Password") {
+                                inputField = '<input type="password" class="form-control" placeholder="Password" readonly style="width: 200px;">';
+                            } else if (selectedFieldType === "Select Box") {
+                                inputField = '<select class="form-select" style="width: 200px;" disabled><option>selectbox </option></select>';
+                            } else if (selectedFieldType === "Email") {
+                                inputField = '<input type="email" class="form-control" placeholder="Email" readonly ' + 'style="width: 200px;">';
+                            } else if (selectedFieldType === "Radio Button") {
+                                inputField = '<input type="radio" name="' + formId + '" value="Yes" readonly> Yes<br>' +
+                                    '<input type="radio" name="' + formId + '" value="No" readonly> No<br>';
+                            } else if (selectedFieldType === "Calc Field") {
+                                inputField = '<input type="number" class="form-control" placeholder="Calc Field" readonly ' + 'style="width: 200px;">';
+                            } else if (selectedFieldType === "Check Box") {
+                                inputField = '<input type="checkbox" name="' + formId + '" value="Option 1" readonly> Option 1<br>' +
+                                    '<input type="checkbox" name="' + formId + '" value="Option 2" readonly> Option 2<br>';
+                            } else if (selectedFieldType === "Image") {
+                                inputField = '<input type="file" accept="image/*" disabled>';
+                            } else if (selectedFieldType === "Logo") {
+                                inputField = '<input type="file" accept="image/*" disabled>';
+                            } else if (selectedFieldType === "Comment Box") {
+                                inputField = '<textarea class="form-control" rows="2" placeholder="Comment Box" readonly></textarea>';
+                            } else if (selectedFieldType === "Quantity Box") {
+                                inputField = '<input type="number" class="form-control" placeholder="Quantity Box" readonly>';
+                            } else if (selectedFieldType === "Button") {
+                                inputField = '<button type="button" class="btn btn-primary placeholder="Button" " disabled>Button</button>';
+                            } else if (selectedFieldType === "Tables") {
+                                inputField = '<table class="table" placeholder ="Table" readonly><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr><tr><td>Data 4</td><td>Data 5</td><td>Data 6</td></tr><tr><td>Data 7</td><td>Data 8</td><td>Data 9</td></tr></tbody></table>';
+                            } else if (selectedFieldType === "Video Field") {
+                                inputField = '<input type="file" accept="video/*" disabled>';
+                            } else if (selectedFieldType === "File Field") {
+                                inputField = '<input type="file" disabled>';
+                            } else if (selectedFieldType === "Audio Field") {
+                                inputField = '<input type="file" accept="audio/*" disabled>';
+                            }
+        
+                            var fieldId = "field" + "type" + formCounter;
+                            var selectedFieldTypeHtml =
+                                '<div class="draggable-label form-fieldtype" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                                totalHeight +
+                                'px; padding: 10px; background-color: lightgreen;">' + inputField + '</div>';
+                            $(".grid-item").append(selectedFieldTypeHtml);
+                            totalHeight += 40;
+        
+                            // Add field type details to draggableData array
+                            draggableData.push({
+                                id: fieldId,
+                                formname: formName,
+                                fieldname: "",
+                                fieldtype: selectedFieldType,
+                                posX: null,
+                                posY: null,
+                                padding: 10,
+                                backgroundColor: "lightgreen"
+                            });
+                        }
+                    });
+        
+                    formCounter++; // Increment form counter for each form
+                });
+        
+                var minHeight = Math.max(totalHeight, 750);
+                $(".grid-container").css("min-height", minHeight + "px");
+        
+                $(".draggable-label").draggable({
+                    containment: ".grid-container",
+                    scroll: false,
+                    stack: ".draggable-label",
+                    start: function (event, ui) {
+                        clearInterval(paddingChangeTimer); // Clear any ongoing padding change interval
+                    },
+                    drag: function (event, ui) {
+                        var currentPadding = parseInt($(this).css('padding'));
+                        if (currentPadding < maxPadding) {
+                            $(this).css('padding', (currentPadding ) + 'px');
+                        }
+                    },
+                    stop: function (event, ui) {
+                        // Get position details
+                        var posX = ui.position.left;
+                        var posY = ui.position.top;
+                        var padding = parseInt($(this).css('padding'));
+                        var backgroundColor = $(this).css('background-color');
+                        var dataId = $(this).attr('id');
+                        var formname = $(this).hasClass('formname') ? $(this).text().trim() : ""; 
+                        var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : ""; // Get fieldname if it's a fieldname element
+                        var fieldtype = $(this).hasClass('form-fieldtype') ? 
+                            $(this).find('input').attr('placeholder') || 
+                            $(this).find('select').val() || 
+                            $(this).find('textarea').attr('placeholder') || 
+                            $(this).find('button').attr('placeholder') || 
+                            $(this).find('table').attr('placeholder') || 
+                            "" : "";
+        
+                        // Update draggable data array
+                        var index = draggableData.findIndex(item => item.id === dataId);
+                        if (index !== -1) {
+                            draggableData[index].posX = posX;
+                            draggableData[index].posY = posY;
+                            draggableData[index].padding = padding;
+                            draggableData[index].backgroundColor = backgroundColor;
+                            draggableData[index].formname = formname;
+                            draggableData[index].fieldname = fieldname;
+                            draggableData[index].fieldtype = fieldtype;
+                            
+
+                            if ($(this).hasClass('form-name')) {
+                                draggableData[index].formname = $(this).text().trim();
+                                //console.log("Formname: " + draggableData[index].formname); // Debugging statement
+                            } else if ($(this).hasClass('form-fieldname')) {
+                                draggableData[index].fieldname = $(this).text().trim();
+                                //console.log("Fieldname: " + draggableData[index].fieldname); // Debugging statement
+                            } else if ($(this).hasClass('form-fieldtype')) {
+                                draggableData[index].fieldtype = $(this).text().trim();
+                                //console.log("Fieldtype: " + draggableData[index].fieldtype); // Debugging statement
+                            }
+                            // Log the updated draggableData
+                            console.log("ID: " + draggableData[index].id +
+                            ", Formname: " + draggableData[index].formname +
+                            ", Fieldname: " + draggableData[index].fieldname +
+                            ", Fieldtype: " + draggableData[index].fieldtype +
+                            ", Position X: " + posX +
+                            ", Position Y: " + posY +
+                            ", Padding: " + padding +
+                            ", Background Color: " + backgroundColor);
+                        }
+                        else {
+                            console.log("Error: Element with ID " + dataId + " not found in draggableData array.");
+                        }
+        
+                        // Log the required information
+                        
+                        // Collision detection
+                        $(".draggable-label").not(this).each(function () {
+                            if (collision($(ui.helper), $(this))) {
+                                $(ui.helper).css({
+                                    top: ui.originalPosition.top,
+                                    left: ui.originalPosition.left
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                });
+                
+                // Double-sided arrow event handlers for increasing and decreasing padding
+                $(".draggable-label").on('mousedown', function (e) {
+                    var self = $(this);
+                    if (e.offsetX < 10) {
+                        paddingChangeTimer = setInterval(function () {
+                            var currentPadding = parseInt(self.css('padding'));
+                            if (currentPadding < maxPadding) {
+                                self.css('padding', (currentPadding + paddingChangeInterval) + 'px');
+                                
+                            }
+                        }, 100); // Adjust the interval as needed
+                    } else if (e.offsetX > self.width() - 10) {
+                        paddingChangeTimer = setInterval(function () {
+                            var currentPadding = parseInt(self.css('padding'));
+                            if (currentPadding > paddingChangeInterval) {
+                                self.css('padding', (currentPadding - paddingChangeInterval) + 'px');
+                                
+                            }
+                        }, 100); // Adjust the interval as needed
+                    }
+                }).on('mouseup mouseleave', function () {
+                    clearInterval(paddingChangeTimer);
+                });
+            }
+        
+            $(".Preview").click(previewFormValues);
+        
+            function collision($div1, $div2) {
+                var x1 = $div1.offset().left;
+                var y1 = $div1.offset().top;
+                var h1 = $div1.outerHeight(true);
+                var w1 = $div1.outerWidth(true);
+                var b1 = y1 + h1;
+                var r1 = x1 + w1;
+                var x2 = $div2.offset().left;
+                var y2 = $div2.offset().top;
+                var h2 = $div2.outerHeight(true);
+                var w2 = $div2.outerWidth(true);
+                var b2 = y2 + h2;
+                var r2 = x2 + w2;
+        
+                if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+                return true;
+            }
+        });
+        });
+        
+
 
 
       
