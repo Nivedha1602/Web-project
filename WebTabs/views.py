@@ -1,7 +1,8 @@
+import json
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import FormData,FieldData
+from .models import FormData,FieldData,DraggableData
 from django.shortcuts import render, redirect
 from .forms import SignupForm, LoginForm
 from .models import User
@@ -53,7 +54,8 @@ def home(request):
 from django.db import models
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Project, FormData, FieldData
+from .models import Project, FormData, FieldData,DraggableData
+
 
 @csrf_exempt
 def submit_form_data(request):
@@ -84,8 +86,9 @@ def submit_form_data(request):
                         'Rediretpath_name': Rediretpath_name,
                     }
 
+                    
                     form_instance = FormData.objects.create(**form_data)
-                    form_id = form_instance.id
+                    form_id=form_instance.id
 
                     for i, (key, value) in enumerate(items_list):
                         if 'field' in key and key.startswith(form_key) and 'field' in key and 'required' not in key and  'readable' not in key:
@@ -121,7 +124,7 @@ def submit_form_data(request):
             for field_data in form_data_list:
                 FieldData.objects.create(**field_data)
 
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'form_id': form_id})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
@@ -134,6 +137,8 @@ def check_project_name(request):
         exists = Project.objects.filter(name=project_name).exists()
         return JsonResponse({'exists': exists})
     return JsonResponse({'exists': False})
+
+@csrf_exempt
 def fetch_data(request):
     project = Project.objects.all().values()
     form_data = FormData.objects.all().values()
@@ -141,14 +146,92 @@ def fetch_data(request):
     return JsonResponse({'form_data': list(form_data), 'field_data': list(field_data),'project': list(project)})
 
 
-
+@csrf_exempt
 def delete_data(request):
     project_name = request.POST.get('project_name')
     try:
         project = Project.objects.get(name=project_name)
-        form_data = FormData.objects.filter(project=project).delete()
-        field_data = FieldData.objects.filter(project=project).delete()
+        
+        # Delete related form data
+        FormData.objects.filter(project=project).delete()
+        
+        # Delete related field data
+        FieldData.objects.filter(project=project).delete()
+        
+        # Delete related draggable data
+        DraggableData.objects.filter(project=project).delete()
+        
+        # Drop draggable data table
+        table_name = f'draggable_data_{project_name}'
+        with connection.cursor() as cursor:
+            cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+        
+        # Delete the project itself
         project.delete()
+        
         return JsonResponse({'success': True})
     except Project.DoesNotExist:
         return JsonResponse({'success': False, 'message': 'Project not found'})
+
+
+from django.db import connection
+import time
+
+@csrf_exempt
+def save_draggable_data(request):
+    if request.method == 'POST':
+        project_name = request.POST.get('project_name', '')
+        if not project_name:
+            return JsonResponse({'success': False, 'error': 'Project name is required.'})
+
+        try:
+            project = Project.objects.get(name=project_name)
+            project_id = project.id
+        except Project.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Project not found.'})
+    
+        draggable_data = request.POST.get('draggable_data')
+        if draggable_data:
+            try:
+                # Create a new table for each submission with a timestamp-based name
+                table_name = f'draggable_data_{project_name}'
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        f"CREATE TABLE {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, forms_name VARCHAR(100),  x_axis VARCHAR(255), y_axis VARCHAR(255), color VARCHAR(50), padding_size VARCHAR(255), formid VARCHAR(100), fieldid VARCHAR(100), project_id INTEGER)"
+                    )
+
+                    
+                    
+                    a="null"
+                    for data in json.loads(draggable_data):
+                        if data.get('form_name', '') not in  " ":
+                            a=data.get('form_name', '')
+                        elif data.get('field_name', '') not in  " ":
+                            a=data.get('field_name', '')
+                        elif data.get('field_type', '') not in  " ":
+                            a=data.get('field_type', '')
+                        
+                        DraggableData.objects.create(
+                            project=project,
+                            forms_name=a,
+                            x_axis=data.get('x_axis', ''),
+                            y_axis=data.get('y_axis', ''),
+                            color=data.get('background_color', ''),
+                            padding_size=data.get('padding', ''),
+                            formid=data.get('form_id', ''),
+                            fieldid=data.get('field_id', '')
+                        )
+                        
+                        cursor.execute(
+                            f"INSERT INTO {table_name} (forms_name, x_axis, y_axis, color, padding_size, formid, fieldid, project_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                            [a,
+                             data.get('x_axis', ''), data.get('y_axis', ''), data.get('background_color', ''),
+                             data.get('padding', ''), data.get('form_id', ''), data.get('field_id', ''), project_id]
+                        )
+                return JsonResponse({'success': True})
+            except Exception as e:
+                return JsonResponse({'success': False, 'error': str(e)})
+        else:
+            return JsonResponse({'success': False, 'error': 'No draggable data provided.'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'})

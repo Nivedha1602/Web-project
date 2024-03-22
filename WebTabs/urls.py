@@ -11,6 +11,7 @@ urlpatterns = [
     path('check_project_name/', views.check_project_name, name='check_project_name'),
     path('fetch_data/', views.fetch_data, name='fetch_data'),
     path('delete_data/', views.delete_data, name='delete_data'),
+    path('save_draggable_data/', views.save_draggable_data, name='save_draggable_data'),
               ]
 
 

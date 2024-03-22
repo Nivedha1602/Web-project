@@ -56,27 +56,32 @@ class User(models.Model):
         self.username = f"{self.name}@{self.project_name}"
         super(User, self).save(*args, **kwargs)
        
-    # def save(self, *args, **kwargs):
-    #     existing_project = Project.objects.filter(name=self.project_name).first()
-    #     if existing_project:
-    #         self.project_name = existing_project
-    #     else:
-    #         new_project = Project.objects.create(name=self.project_name)
-    #         self.project_name = new_project
-    #     self.username = f"{self.name}@{self.project_name}"
-    #     super(User, self).save(*args, **kwargs)
 
+class DraggableData(models.Model):
+    forms_name = models.CharField(max_length=100, null=True, blank=True)
+    x_axis = models.CharField(max_length=255, default=None)
+    y_axis = models.CharField(max_length=255, default=None)
+    color = models.CharField(max_length=50, default="value")
+    padding_size = models.CharField(max_length=255, default=None)
+    formid = models.CharField(max_length=100, null=True, blank=True)
+    fieldid = models.CharField(max_length=100, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE ,default=1)
 
-# class User(models.Model):
-#     name = models.CharField(max_length=100)
-#     projects = models.ManyToManyField(Project)
+    def __str__(self):
+        return f"{self.forms_name} - {self.project.name}"
 
-#     # Other fields
-#     password = models.CharField(max_length=100)
-#     username = models.CharField(max_length=200, blank=True)
     
-#     def save(self, *args, **kwargs):
-#         # Update username based on the first project (assuming each user has at least one project)
-#         if self.projects.exists():
-#             self.username = f"{self.name}@{self.projects.first().name}"
-#         super(User, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if not self.forms_name:
+            self.forms_name = 'null'
+        # if not self.field_name:
+        #     self.field_name = 'null'
+        # if not self.field_type:
+        #     self.field_type = 'null'
+        if not self.x_axis:
+            self.x_axis = 'null'
+        if not self.y_axis:
+            self.y_axis = 'null'
+        if not self.padding_size:
+            self.padding_size = 'null'
+        super(DraggableData, self).save(*args, **kwargs)
