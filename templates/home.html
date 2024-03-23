@@ -412,56 +412,56 @@
         let fieldCounters = {}; // Use an object to store field counters for each form
 
         function updateLabel2(selectBox3) {
-            const selectBoxParent = selectBox3.closest('.dynamic-field');
-            const formId = selectBox3.closest('form').id;
-
-            // Initialize fieldCounter for the form if it doesn't exist
-            if (!fieldCounters[formId]) {
-                fieldCounters[formId] = 2; // Start from 2 for each form
+            const dynamicField = selectBox3.closest('.row.mb-3'); // Adjust the selector to target the closest container of the dynamic field
+            if (!dynamicField) {
+                console.error("Dynamic field not found");
+                return;
             }
 
-            const dynamicFields = selectBoxParent.parentNode.querySelectorAll('.dynamic-field');
+            const formId = dynamicField.closest('form').id;
+            const formNameLabel = dynamicField.querySelector('label[for^="' + formId + '"]'); // Adjusted to target the label based on the form ID
+            if (!formNameLabel) {
+                console.error("Label element not found within dynamic field");
+                return;
+            }
 
-            dynamicFields.forEach((dynamicField) => {
-                const selectBox = dynamicField.querySelector('select');
-                const formNameLabel = dynamicField.querySelector('label');
-                const fieldCounter = fieldCounters[formId];
-                const newFieldId = `${formId}|field${fieldCounter}`;
-                const fieldName = `Field name ${fieldCounter}`;
+            const fieldCounter = fieldCounters[formId] || 1;
+            const newFieldId = `${formId}|field${fieldCounter}`;
+            const fieldName = `Field name ${fieldCounter}`;
 
-                if (selectBox === selectBox3) {
-                    const selectedValue = selectBox.value;
+            const selectedValue = selectBox3.value;
 
-                    if (
-                        selectedValue === "Select Box" ||
-                        selectedValue === "Varchar Field" ||
-                        selectedValue === "Number Field" ||
-                        selectedValue === "Password" ||
-                        selectedValue === "Select Box" ||
-                        selectedValue === "Email" ||
-                        selectedValue === "Radio Button" ||
-                        selectedValue === "Calc Field" ||
-                        selectedValue === "Check Box" ||
-                        selectedValue === "Image" ||
-                        selectedValue === "Logo" ||
-                        selectedValue === "Comment Box" ||
-                        selectedValue === "Button" ||
-                        selectedValue === "Tables" ||
-                        selectedValue === "Video Field" ||
-                        selectedValue === "File Field" ||
-                        selectedValue === "Audio Field"
-                    ) {
-                        formNameLabel.textContent = selectBox.value;
-                    } else {
-                        formNameLabel.textContent = fieldName;
-                    }
+            if (
+                selectedValue === "Select Box" ||
+                selectedValue === "Varchar Field" ||
+                selectedValue === "Number Field" ||
+                selectedValue === "Password" ||
+                selectedValue === "Select Box" ||
+                selectedValue === "Email" ||
+                selectedValue === "Radio Button" ||
+                selectedValue === "Calc Field" ||
+                selectedValue === "Check Box" ||
+                selectedValue === "Image" ||
+                selectedValue === "Logo" ||
+                selectedValue === "Comment Box" ||
+                selectedValue === "Button" ||
+                selectedValue === "Tables" ||
+                selectedValue === "Video Field" ||
+                selectedValue === "File Field" ||
+                selectedValue === "Audio Field"
+            ) {
+                formNameLabel.textContent = selectedValue;
+            } else {
+                formNameLabel.textContent = fieldName;
+            }
 
-                    // Increment fieldCounter for the form
-                    fieldCounters[formId]++;
-                }
-            });
+            
+            fieldCounters[formId] = fieldCounter + 1;
         }
 
+
+
+        
 
     </script>
     <title>WebProject Tabs</title>
@@ -510,13 +510,13 @@
 
                         <div class="row mb-3">
                             <div class="col-md-3">
-                                <label class="form-label">Form</label>
+                                <label class="form-label">form1</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control size" name="form1" placeholder="form1">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">Redirect path</label>
+                                <label class="form-label"> form1 Redirect path</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control size" name="form1|redirect path"
                                         placeholder="form1 Redirect Path">
@@ -526,20 +526,22 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-9 dynamic-field">
+                            <div class="col-md-3 dynamic-field">
                                 <label class="form-label" for="fieldname1">Field Name 1</label>
-                                <label for="fieldType" style="margin-left:290px" class="form-label"
-                                    id="form-name">Selection Box</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="form1|field1"
-                                        placeholder="form1 Field name 1">
-                                    <select class="form-select ms-1" id="selectBox1" name="form1|selection1"
+                                    <input type="text" class="form-control size" name="form1|field1" placeholder="form1 Field name 1">
+                                </div>
+                            </div> 
+                            <div class="col"> 
+                                <label for="fieldType" style="margin-left:7px" class="form-label" id="form-name" >Selection Box</label>
+                                    <div class="input-group">                                                     
+                                        <select class="form-select ms-1" id="selectBox1" name="form1|selection1"
                                         onchange="updateLabel(this)">
-                                        <option value="Select Box">Select Box</option>
                                         <option value="Varchar Field">Varchar Field</option>
                                         <option value="Number Field">Number Field</option>
                                         <option value="Password">Password</option>
-
+                                        <option value="Select Box">Select Box</option>
+                                        <option value="Number Field">Number Field</option>
                                         <option value="Email">Email</option>
                                         <option value="Radio Button">Radio Button</option>
                                         <option value="Calc Field">Calc Field</option>
@@ -553,9 +555,10 @@
                                         <option value="File Field">File Field</option>
                                         <option value="Audio Field">Audio Field</option>
                                     </select>
-                                    <div class="row">
-                                        <div class="col-mb-4">
-                                            <input type="hidden" class="checkbox" name="form1|field1|required"
+                                                                       
+                                    
+                                    <div class="col-md-6 checkboxes">                      
+                                        <input type="hidden" class="checkbox" name="form1|field1|required"
                                                 value="0">
                                             <input type="checkbox" class="checkbox" value="1"
                                                 name="form1|field1|required" />
@@ -564,13 +567,11 @@
                                                 value="0">
                                             <input type="checkbox" class="checkbox" name="form1|field1|readable">
                                             <label for="checkbox2">Readable</label>
-
-                                        </div>
+                                                      
+                                        <button class="btn btn-grad ms-5 add-field" style="background-color: #92beab;margin-left:160px;" type="button"><b>+</b></button>
                                     </div>
-                                    <button class="btn btn-grad ms-5 add-field"
-                                        style="background-color: #92beab;margin-left:160px;"
-                                        type="button"><b>+</b></button>
-                                </div>
+                                    
+                                    </div>
                             </div>
                         </div>
                     </form>
@@ -639,65 +640,68 @@
             var formCounter = 1;
             function generateFormHtml(formId) {
                 return `
-                    <form class="dynamic-form" id="${formId}">
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label for="${formId}-forms" class="form-label">${formId}</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control size" id="${formId}-forms"  name="${formId}" placeholder="${formId}">
+                <form class="dynamic-form" id="${formId}">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label for="${formId}-forms" class="form-label">${formId}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control size" id="${formId}-forms"   name="${formId}" placeholder="${formId}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="${formId}-redirect" class="form-label">${formId}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control size" id="${formId}-redirect path" name="${formId}|redirect path"  placeholder="${formId} Redirect Path">
+                                            <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;row-gap: 1rem;" type="button">+</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="${formId}-redirect" class="form-label">${formId}</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control size" id="${formId}-redirect path" name="${formId}|redirect path"  placeholder="${formId} Redirect Path">
-                                    <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;row-gap: 1rem;" type="button">+</button>
-                                </div>
-                            </div>
-                        </div>
 
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-9 dynamic-field">
-                                <label for="${formId}|field1" class="form-label">${formId}</label>
-                                <label for="fieldType" style="margin-left:230px" id="form-name">Selection Box</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control size" id="${formId}-field" name="${formId}|field1" placeholder="${formId} Field Name 1">
-                                    <select class="form-select ms-1" id="selectBox2" onchange="updateLabel1(this)" name="${formId}|selection1">
-                                      <option value="Select Box">Select Box</option>
-                                      <option value="Varchar Field">Varchar Field</option>
-                                      <option value="Number Field">Number Field</option>
-                                      <option value="Password">Password</option>
-                                      <option value="Select Box">Select Box</option>
-                                      
-                                      <option value="Email">Email</option>
-                                      <option value="Radio Button">Radio Button</option>
-                                      <option value="Calc Field">Calc Field</option>
-                                      <option value="Check Box">Check Box</option>
-                                      <option value="Image">Image</option>
-                                      <option value="Logo">Logo</option>
-                                      <option value="Comment Box">Comment Box</option>
-                                      <option value="Button">Button</option>
-                                      <option value="Tables">Tables</option>
-                                      <option value="Video Field">Video Field</option>
-                                      <option value="File Field">File Field</option>
-                                      <option value="Audio Field">Audio Field</option>
-                                        <!-- Add other options as needed -->
-                                    </select>
-                                    <div class="row">
-                                      <div class="col-mb-4">                  
-                                        <input type="hidden" class="checkbox"  name="${formId}|field1|required"  value="0" >
-                                          <input type="checkbox" class="checkbox" value="1"  name="${formId}|field1|required"  >
-                                          <label for="checkbox1">Required</label>
-                                          <input type="hidden" class="checkbox"   name="${formId}|field1|readable" value="0" >
-                                          <input type="checkbox" class="checkbox"  name="${formId}|field1|readable" value="1" >
-                                          <label for="checkbox2">Readable</label>
-                                      </div>
-                                    </div>      
-                                    <button class="btn btn-grad ms-5 add-field" style="background-color: #92beab;margin-left:500px;" type="button">+</button>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-3 dynamic-field">
+                                        <label for="${formId}|field1" class="form-label">${formId}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control size" id="${formId}-field" name="${formId}|field1" placeholder="${formId} Field name 1">
+                                        </div>
+                                    </div> 
+                                    <div class="col">
+                                        <label for="fieldType" style="margin-left:7px;padding-top:1rem;margin-bottom: 0.5rem;" id="form-name">Selection Box</label>
+                                            <div class="input-group">
+                                                <select class="form-select ms-1" id="selectBox2" onchange="updateLabel1(this)" name="${formId}|selection1">
+                                                <option value="Varchar Field">Varchar Field</option>
+                                                <option value="Number Field">Number Field</option>
+                                                <option value="Password">Password</option>
+                                                <option value="Select Box">Select Box</option>
+                                                <option value="Number Field">Number Field</option>
+                                                <option value="Email">Email</option>
+                                                <option value="Radio Button">Radio Button</option>
+                                                <option value="Calc Field">Calc Field</option>
+                                                <option value="Check Box">Check Box</option>
+                                                <option value="Image">Image</option>
+                                                <option value="Logo">Logo</option>
+                                                <option value="Comment Box">Comment Box</option>
+                                                <option value="Button">Button</option>
+                                                <option value="Tables">Tables</option>
+                                                <option value="Video Field">Video Field</option>
+                                                <option value="File Field">File Field</option>
+                                                <option value="Audio Field">Audio Field</option>
+                                                    <!-- Add other options as needed -->
+                                                </select>
+
+                                            <div class="col-md-6 checkboxes">                   
+                                                <input type="hidden" class="checkbox"  name="${formId}|field1|required"  value="0" >
+                                                <input type="checkbox" class="checkbox" value="1"  name="${formId}|field1|required"  >
+                                                <label for="checkbox1">Required</label>
+                                                <input type="hidden" class="checkbox"   name="${formId}|field1|readable" value="0" >
+                                                <input type="checkbox" class="checkbox"  name="${formId}|field1|readable" value="1" >
+                                                <label for="checkbox2">Readable</label>                                 
+                                                <button class="btn btn-grad ms-5 add-field" style="background-color: #92beab;margin-left:500px;" type="button">+</button>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                  
                     </form>
                 `;
             }
@@ -735,48 +739,51 @@
 
 
                 var newField = `
-                    <div class="row mb-3">
-                        <div class="col-md-9 dynamic-field">
-                            <label for="${formId}|field${fieldCounter}" class="form-label">Field name ${fieldCounter} </label>
-                            <label for="${newFieldId}" style="margin-left:270px" id="form-name">Selection Box  ${fieldCounter}</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control size" id="${formId}-${newFieldId}" name="${formId}|field${fieldCounter}" placeholder="${formId} Field name ${fieldCounter}">
-                                <select class="form-select ms-1" id="selectBox3" onchange="updateLabel2(this)" name="${formId}|selection${fieldCounter}" >
-                                  <option value="Select Box">Select Box</option>
-                                  <option value="Varchar Field">Varchar Field</option>
-                                  <option value="Number Field">Number Field</option>
-                                  <option value="Password">Password</option>
-                                  
-                                  
-                                  <option value="Email">Email</option>
-                                  <option value="Radio Button">Radio Button</option>
-                                  <option value="Calc Field">Calc Field</option>
-                                  <option value="Check Box">Check Box</option>
-                                  <option value="Image">Image</option>
-                                  <option value="Logo">Logo</option>
-                                  <option value="Comment Box">Comment Box</option>
-                                  <option value="Button">Button</option>
-                                  <option value="Tables">Tables</option>
-                                  <option value="Video Field">Video Field</option>
-                                  <option value="File Field">File Field</option>
-                                  <option value="Audio Field">Audio Field</option>
-                                    <!-- Add other options as needed -->
-                                </select>
-                                <div class="row">
-                                  <div class="col-mb-4">              
+                            <div class="row mb-3">
+                                <div class="col-md-3 dynamic-field">
+                                    <label for="${formId}-${newFieldId}" class="form-label">Field name ${fieldCounter}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control size" id="${formId}-${newFieldId}" name="${formId}|field${fieldCounter}" placeholder="${formId} Field name ${fieldCounter}">
+                                    </div>
+                                </div>
+                                <div class="col">  
+                                    <label for="${formId}-selectBox${fieldCounter}" style="margin-left:7px;padding-top:1rem;margin-bottom: 0.5rem;" id="form-name">Selection Box ${fieldCounter}</label>
+                                    <div class="input-group">
+                                        <select class="form-select ms-1" id="${formId}-selectBox${fieldCounter}" onchange="updateLabel2(this)" name="${formId}|selection${fieldCounter}">
+                                            <option value="Varchar Field">Varchar Field</option>
+                                            <option value="Number Field">Number Field</option>
+                                            <option value="Password">Password</option>
+                                            <option value="Select Box">Select Box</option>
+                                            <option value="Number Field">Number Field</option>
+                                            <option value="Email">Email</option>
+                                            <option value="Radio Button">Radio Button</option>
+                                            <option value="Calc Field">Calc Field</option>
+                                            <option value="Check Box">Check Box</option>
+                                            <option value="Image">Image</option>
+                                            <option value="Logo">Logo</option>
+                                            <option value="Comment Box">Comment Box</option>
+                                            <option value="Button">Button</option>
+                                            <option value="Tables">Tables</option>
+                                            <option value="Video Field">Video Field</option>
+                                            <option value="File Field">File Field</option>
+                                            <option value="Audio Field">Audio Field</option>
+                                                <!-- Add other options as needed -->
+                                            </select>
+                                <div class="col-md-6 checkboxes">                   
+            
                                     <input type="hidden" class="checkbox-${formId}"  name="${formId}|field${fieldCounter}|required"  value="0" />
-                                          <input type="checkbox" class="checkbox-${formId}" value="1"  name="${formId}|field${fieldCounter}|required"  />
-                                          <label for="checkbox1">Required</label>
-                                          <input type="hidden" class="checkbox-${formId}"   name="${formId}|field${fieldCounter}|readable" value="0" />
-                                          <input type="checkbox" class="checkbox-${formId}"  name="${formId}|field${fieldCounter}|readable"value="1"  />
-                                          <label for="checkbox2">Readable</label>
-                                  </div>
-                                </div>      
-                                <button class="btn btn-danger ms-5 remove-field" name="removebutton" type="button" style:"margin-left:500px;">-</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                                    <input type="checkbox" class="checkbox-${formId}" value="1"  name="${formId}|field${fieldCounter}|required"  />
+                                    <label for="checkbox1">Required</label>
+                                    <input type="hidden" class="checkbox-${formId}"   name="${formId}|field${fieldCounter}|readable" value="0" />
+                                    <input type="checkbox" class="checkbox-${formId}"  name="${formId}|field${fieldCounter}|readable"value="1"  />
+                                    <label for="checkbox2">Readable</label>
+                                    <button class="btn btn-danger ms-5 remove-field" name="removebutton" type="button" style:"margin-left:500px;">-</button>
+                                </div>
+                            </div>  
+                  
+                    </div>    
+                </div>
+        `;
 
                 $('#' + formId).append(newField);
 
@@ -822,6 +829,7 @@
 
                    
                     $('#projectNameAlert').hide();
+                    $('#searchInput').val('');
                 });
             });
             $(document).ready(function () {
