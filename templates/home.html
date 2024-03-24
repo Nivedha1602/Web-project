@@ -860,142 +860,165 @@
                         });
                     }
                 });
-                $('#submitBtn').on('click', function () {
-                    if ($('#project_name').val().trim() === '') {
-                        $('#projectNameAlert').text('Project name cannot be empty.').show();
-                        return;
-                    }
-                    $('.checkbox').each(function () {
-                        $(this).val(this.checked ? 1 : 0);
-                    });
-                    var formDataArray = $('form').serializeArray();
-                    var project_name = $('#project_name').val();
-                    var formDataJSON = {};
-                    $.each(formDataArray, function (index, field) {
-                        formDataJSON[field.name] = field.value;
-                    });
-                    formDataJSON['project_name'] = project_name;
-                    let flag =0;
-                    $.ajax({
-                        type: 'POST',
-                        url: '/submit_form_data/',
-                        data: formDataJSON,
-                        success: function (formResponse) {
-                            if (formResponse.success) {
-                                console.log('Form data submitted successfully!');
-                                console.log(formDataJSON);
-                                alert("Form data submitted successfully!");
-                                submitDraggableData(project_name);
-                                $('form :input:not("#urlInput")').val('');
-                                $('form :checkbox').prop('checked', false);
-                                $('form select').prop('selectedIndex', 0);
-                                $('#project_name').val('');
-                                $('#projectNameAlert').hide();
+                $(document).ready(function () {
+                    var okButtonClicked = false; // Flag to track if OK button is clicked
                 
-                                
-                            } else {
-                                console.error('Failed to submit form data.');
-                                if (formResponse.error === 'Project name already exists') {
-                                    $('#projectNameAlert').text('Project name already exists. Please choose a different name.');
-                                    $('#projectNameAlert').show();
-                                } else {
-                                    alert("Failed to submit form data.");
-                                }
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error("AJAX Error: " + textStatus, errorThrown);
-                            alert("Failed to submit form data.");
+                    // Click event handler for the OK button
+                    $('#okbtn').on('click', function () {
+                        okButtonClicked = true; // Set the flag to true when OK button is clicked
+                        enableSubmitButton(); // Enable the submit button when OK button is clicked
+                    });
+                
+                    // Click event handler for the Submit button
+                    $('#submitBtn').on('click', function () {
+                        // Check if OK button is clicked
+                        if (okButtonClicked) {
+                            // OK button is clicked, so submit form and field data
+                            gatherAndSubmitDraggableData();
+                        } else {
+                            alert("Click OK button after Preview !!");
                         }
                     });
-                });
                 
-                function submitDraggableData(projectName) {
-                    var draggableData = [];
-                    var formCounter = 1; // Counter for forms
-                    var fieldCounter = 1; // Counter for fields
-                    var selectionCounter = 1; // Counter for fields
-                    
-
-                    $('.draggable-label').each(function () {
-                        var posX = $(this).css('left');
-                        var posY = $(this).css('top');
-                        var padding = $(this).css('padding');
-                        var backgroundColor = $(this).css('background-color');
-                        formId=null;
-                        fieldId=null;
-                        var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
-                        var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
-                        var fieldtype = $(this).hasClass('form-fieldtype') ?
-                            $(this).find('input').attr('placeholder') ||
-                            $(this).find('select').val() ||
-                            $(this).find('textarea').attr('placeholder') ||
-                            $(this).find('Button').attr('placeholder') ||
-                            $(this).find('Video Field').attr('placeholder') ||
-                            $(this).find('Audio Field').attr('placeholder') ||
-                            $(this).find('File Field').attr('placeholder') ||
-                            $(this).find('Image').attr('placeholder') ||
-                            $(this).find('Logo').attr('placeholder') ||
-                            $(this).find('Quantity Box').attr('placeholder') ||
-                            $(this).find('Radio Button').attr('placeholder') ||
-                            $(this).find('Check Box').attr('placeholder') ||
-                            "" : "";
-
-                        
-                            if ($(this).hasClass('form-name')) {
-                                formId = 'form' + formCounter; 
-                                formCounter++;
-                                fieldCounter =1;
-                                selectionCounter=1;
-                            } else if ($(this).hasClass('form-fieldname')) {
-                                formId = 'form' + (formCounter - 1); 
-                                fieldId = formId + '|field' + fieldCounter; 
-                                fieldCounter++; 
-                            
-                            } else if ($(this).hasClass('form-fieldtype')) {
-                                formId = 'form' + (formCounter - 1); 
-                                fieldId =formId+ '|field' + selectionCounter; 
-                                selectionCounter++; 
-                            }    
-
-                        draggableData.push({
-                            'form_id' : formId,
-                            'field_id' : fieldId,
-                            'x_axis': posX,
-                            'y_axis': posY,
-                            'padding': padding,
-                            'background_color': backgroundColor,
-                            'form_name': formname,
-                            'field_name': fieldname,
-                            'field_type': fieldtype,
-                            //'project_name': project_name
+                    // Function to enable the submit button
+                    function enableSubmitButton() {
+                        $('#submitBtn').prop('disabled', false); // Enable the submit button
+                    }
+                
+                    function gatherAndSubmitDraggableData() {
+                        if ($('#project_name').val().trim() === '') {
+                            $('#projectNameAlert').text('Project name cannot be empty.').show();
+                            return;
+                        }
+                        $('.checkbox').each(function () {
+                            $(this).val(this.checked ? 1 : 0);
                         });
-                    });
+                        var formDataArray = $('form').serializeArray();
+                        var project_name = $('#project_name').val();
+                        var formDataJSON = {};
+                        $.each(formDataArray, function (index, field) {
+                            formDataJSON[field.name] = field.value;
+                        });
+                        formDataJSON['project_name'] = project_name;
+                        $.ajax({
+                            type: 'POST',
+                            url: '/submit_form_data/',
+                            data: formDataJSON,
+                            success: function (formResponse) {
+                                if (formResponse.success) {
+                                    console.log('Form data submitted successfully!');
+                                    console.log(formDataJSON);
+                                    alert("Form data submitted successfully!");
+                                    submitDraggableData(project_name);
+                                    $('form :input:not("#urlInput")').val('');
+                                    $('form :checkbox').prop('checked', false);
+                                    $('form select').prop('selectedIndex', 0);
+                                    $('#project_name').val('');
+                                    $('#projectNameAlert').hide();
+                                } else {
+                                    console.error('Failed to submit form data.');
+                                    if (formResponse.error === 'Project name already exists') {
+                                        $('#projectNameAlert').text('Project name already exists. Please choose a different name.');
+                                        $('#projectNameAlert').show();
+                                    } else {
+                                        alert("Failed to submit form data.");
+                                    }
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error: " + textStatus, errorThrown);
+                                alert("Failed to submit form data.");
+                            }
+                        });
+                    }
                 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/save_draggable_data/',
-                        data: {
-                            'project_name': projectName,
-                            'draggable_data': JSON.stringify(draggableData),
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                console.log('Draggable data submitted successfully!');
-                                console.log(draggableData);
-                                alert("Draggable data submitted successfully!");
-                            } else {
-                                console.error('Failed to submit draggable data.');
+                    function submitDraggableData(projectName) {
+                        var draggableData = [];
+                        var formCounter = 1; // Counter for forms
+                        var fieldCounter = 1; // Counter for fields
+                        var selectionCounter = 1; // Counter for fields
+                
+                        $('.draggable-label').each(function () {
+                            var posX = $(this).css('left');
+                            var posY = $(this).css('top');
+                            var padding = $(this).css('padding');
+                            var backgroundColor = $(this).css('background-color');
+                            formId=null;
+                            fieldId=null;
+                            var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
+                            var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
+                            var fieldtype = $(this).hasClass('form-fieldtype') ?
+                                $(this).find('input').attr('placeholder') ||
+                                $(this).find('select').val() ||
+                                $(this).find('textarea').attr('placeholder') ||
+                                $(this).find('Button').attr('placeholder') ||
+                                $(this).find('Video Field').attr('placeholder') ||
+                                $(this).find('Audio Field').attr('placeholder') ||
+                                $(this).find('File Field').attr('placeholder') ||
+                                $(this).find('Image').attr('placeholder') ||
+                                $(this).find('Logo').attr('placeholder') ||
+                                $(this).find('Quantity Box').attr('placeholder') ||
+                                $(this).find('Radio Button').attr('placeholder') ||
+                                $(this).find('Check Box').attr('placeholder') ||
+                                "" : "";
+                
+                            
+                                if ($(this).hasClass('form-name')) {
+                                    formId = 'form' + formCounter; 
+                                    formCounter++;
+                                    fieldCounter =1;
+                                    selectionCounter=1;
+                                } else if ($(this).hasClass('form-fieldname')) {
+                                    formId = 'form' + (formCounter - 1); 
+                                    fieldId = formId + '|field' + fieldCounter; 
+                                    fieldCounter++; 
+                                
+                                } else if ($(this).hasClass('form-fieldtype')) {
+                                    formId = 'form' + (formCounter - 1); 
+                                    fieldId =formId+ '|field' + selectionCounter; 
+                                    selectionCounter++; 
+                                }    
+                
+                            draggableData.push({
+                                'form_id' : formId,
+                                'field_id' : fieldId,
+                                'x_axis': posX,
+                                'y_axis': posY,
+                                'padding': padding,
+                                'background_color': backgroundColor,
+                                'form_name': formname,
+                                'field_name': fieldname,
+                                'field_type': fieldtype,
+                                //'project_name': project_name
+                            });
+                        });
+                    
+                        $.ajax({
+                            type: 'POST',
+                            url: '/save_draggable_data/',
+                            data: {
+                                'project_name': projectName,
+                                'draggable_data': JSON.stringify(draggableData),
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    console.log('Draggable data submitted successfully!');
+                                    console.log(draggableData);
+                                    alert("Draggable data submitted successfully!");
+                                } else {
+                                    console.error('Failed to submit draggable data.');
+                                    alert("Failed to submit draggable data.");
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Failed to submit draggable data:', error);
                                 alert("Failed to submit draggable data.");
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Failed to submit draggable data:', error);
-                            alert("Failed to submit draggable data.");
-                        }
-                    });
-                }
+                        });
+                    }
+                });
+                
             });
 
             $(document).ready(function () {
@@ -1091,6 +1114,18 @@
                     });
                 });
             });
+            $(document).ready(function(){
+                $('#okbtn').on('click', function(){
+                  // Remove active class from alignmentTab and add it to formCreationTab
+                  $('#tab2Content').removeClass('show active');
+                  $('#tab1Content').addClass('show active');
+                  
+                  // Remove active class from nav-link of alignmentTab and add it to nav-link of formCreationTab
+                  $('a[href="#tab2Content"]').removeClass('active');
+                  $('a[href="#tab1Content"]').addClass('active');
+                });
+            });
+    
 
             $("#searchInput").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
