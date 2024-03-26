@@ -197,7 +197,7 @@ def save_draggable_data(request):
                 table_name = f'draggable_data_{project_name}'
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        f"CREATE TABLE {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, forms_name VARCHAR(100),  x_axis VARCHAR(255), y_axis VARCHAR(255), color VARCHAR(50), padding_size VARCHAR(255), formid VARCHAR(100), fieldid VARCHAR(100), project_id INTEGER)"
+                        f"CREATE TABLE {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, forms_name VARCHAR(100),  x_axis VARCHAR(255), y_axis VARCHAR(255), color VARCHAR(50), padding_size VARCHAR(255), project_id INTEGER)"
                     )
 
                     
@@ -218,15 +218,15 @@ def save_draggable_data(request):
                             y_axis=data.get('y_axis', ''),
                             color=data.get('background_color', ''),
                             padding_size=data.get('padding', ''),
-                            formid=data.get('form_id', ''),
-                            fieldid=data.get('field_id', '')
+                            #formid=data.get('form_id', ''),
+                            #fieldid=data.get('field_id', '')
                         )
                         
                         cursor.execute(
-                            f"INSERT INTO {table_name} (forms_name, x_axis, y_axis, color, padding_size, formid, fieldid, project_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                            f"INSERT INTO {table_name} (forms_name, x_axis, y_axis, color, padding_size, project_id) VALUES (%s, %s, %s, %s, %s, %s)",
                             [a,
                              data.get('x_axis', ''), data.get('y_axis', ''), data.get('background_color', ''),
-                             data.get('padding', ''), data.get('form_id', ''), data.get('field_id', ''), project_id]
+                             data.get('padding', ''), project_id]
                         )
                 return JsonResponse({'success': True})
             except Exception as e:

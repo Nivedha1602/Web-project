@@ -241,6 +241,10 @@
             color: black;
             margin-top: 5px;
         }
+        #urlInput {
+            width: 100%; /* You can adjust the width as needed */
+        }
+
 
         /* Mobile devices (portrait and landscape) */
         @media only screen and (max-width: 768px) {
@@ -944,8 +948,8 @@
                             var posY = $(this).css('top');
                             var padding = $(this).css('padding');
                             var backgroundColor = $(this).css('background-color');
-                            formId = null;
-                            fieldId = null;
+                            //formId = null;
+                            //fieldId = null;
                             var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
                             var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
                             var fieldtype = $(this).hasClass('form-fieldtype') ?
@@ -964,25 +968,25 @@
                                 "" : "";
 
 
-                            if ($(this).hasClass('form-name')) {
-                                formId = 'form' + formCounter;
-                                formCounter++;
-                                fieldCounter = 1;
-                                selectionCounter = 1;
-                            } else if ($(this).hasClass('form-fieldname')) {
-                                formId = 'form' + (formCounter - 1);
-                                fieldId = formId + '|field' + fieldCounter;
-                                fieldCounter++;
+                            // if ($(this).hasClass('form-name')) {
+                            //     formId = 'form' + formCounter;
+                            //     formCounter++;
+                            //     fieldCounter = 1;
+                            //     selectionCounter = 1;
+                            // } else if ($(this).hasClass('form-fieldname')) {
+                            //     formId = 'form' + (formCounter - 1);
+                            //     fieldId = formId + '|field' + fieldCounter;
+                            //     fieldCounter++;
 
-                            } else if ($(this).hasClass('form-fieldtype')) {
-                                formId = 'form' + (formCounter - 1);
-                                fieldId = formId + '|field' + selectionCounter;
-                                selectionCounter++;
-                            }
+                            // } else if ($(this).hasClass('form-fieldtype')) {
+                            //     formId = 'form' + (formCounter - 1);
+                            //     fieldId = formId + '|field' + selectionCounter;
+                            //     selectionCounter++;
+                            // }
 
                             draggableData.push({
-                                'form_id': formId,
-                                'field_id': fieldId,
+                                //'form_id': formId,
+                                //'field_id': fieldId,
                                 'x_axis': posX,
                                 'y_axis': posY,
                                 'padding': padding,
@@ -1220,26 +1224,26 @@
                                 } else if (selectedFieldType === "Calc Field") {
                                     inputField = '<input type="number" class="form-control" placeholder="Calc Field" readonly ' + 'style="width: 200px;">';
                                 } else if (selectedFieldType === "Check Box") {
-                                    inputField = '<input type="checkbox"  placeholder="Check Box" name="' + formId + '" value="Option 1" readonly> Option 1<br>' +
+                                    inputField = '<input type="checkbox" placeholder="Check Box" name="' + formId + '" value="Option 1" readonly> Option 1<br>' +
                                         '<input type="checkbox" name="' + formId + '" value="Option 2" readonly> Option 2<br>';
                                 } else if (selectedFieldType === "Image") {
                                     inputField = '<input type="file" placeholder="Image" accept="image/*" disabled>';
                                 } else if (selectedFieldType === "Logo") {
-                                    inputField = '<input type="file"  placeholder="Logo" accept="image/*" disabled>';
+                                    inputField = '<input type="file" placeholder="Logo" accept="image/*" disabled>';
                                 } else if (selectedFieldType === "Comment Box") {
                                     inputField = '<textarea class="form-control" rows="2" placeholder="Comment Box" readonly></textarea>';
                                 } else if (selectedFieldType === "Quantity Box") {
                                     inputField = '<input type="number" class="form-control" placeholder="Quantity Box" readonly>';
                                 } else if (selectedFieldType === "Button") {
-                                    inputField = '<button type="button"  class="btn-primary" placeholder="Button" " disabled>Button</button>';
+                                    inputField = '<button type="button" class="btn-primary" placeholder="Button" " disabled>Button</button>';
                                 } else if (selectedFieldType === "Tables") {
-                                    inputField = '<table class="table" placeholder ="Table" readonly><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr><tr><td>Data 4</td><td>Data 5</td><td>Data 6</td></tr><tr><td>Data 7</td><td>Data 8</td><td>Data 9</td></tr></tbody></table>';
+                                    inputField = '<table class="table" placeholder ="Table" readonly><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr></tbody></table>';
                                 } else if (selectedFieldType === "Video Field") {
-                                    inputField = '<input type="file"  placeholder="Video Field" accept="video/*" disabled>';
+                                    inputField = '<input type="file" placeholder="Video Field" accept="video/*" disabled>';
                                 } else if (selectedFieldType === "File Field") {
-                                    inputField = '<input type="file"  placeholder="File Field" disabled>';
+                                    inputField = '<input type="file" placeholder="File Field" disabled>';
                                 } else if (selectedFieldType === "Audio Field") {
-                                    inputField = '<input type="file"  placeholder="Audio Field" accept="audio/*" disabled>';
+                                    inputField = '<input type="file" placeholder="Audio Field" accept="audio/*" disabled>';
                                 }
 
                                 var fieldId = "field" + "type" + formCounter;
@@ -1281,6 +1285,12 @@
                             var currentPadding = parseInt($(this).css('padding'));
                             if (currentPadding < maxPadding) {
                                 $(this).css('padding', (currentPadding) + 'px');
+
+                                // Increase padding of child elements
+                            $(this).find('.form-control').css('padding', (currentPadding) + 'px');
+                            $(this).find('.btn').css('padding', (currentPadding) + 'px');
+                            $(this).find('textarea').css('padding', (currentPadding - 10) + 'px');
+
                             }
                         },
                         stop: function (event, ui) {
@@ -1319,16 +1329,16 @@
                                 draggableData[index].fieldtype = fieldtype;
 
 
-                                if ($(this).hasClass('form-name')) {
-                                    draggableData[index].formname = $(this).text().trim();
+                                // if ($(this).hasClass('form-name')) {
+                                //     draggableData[index].formname = $(this).text().trim();
 
-                                } else if ($(this).hasClass('form-fieldname')) {
-                                    draggableData[index].fieldname = $(this).text().trim();
+                                // } else if ($(this).hasClass('form-fieldname')) {
+                                //     draggableData[index].fieldname = $(this).text().trim();
 
-                                } else if ($(this).hasClass('form-fieldtype')) {
-                                    draggableData[index].fieldtype = $(this).text().trim();
+                                // } else if ($(this).hasClass('form-fieldtype')) {
+                                //     draggableData[index].fieldtype = $(this).text().trim();
 
-                                }
+                                // }
 
                                 console.log("ID: " + draggableData[index].id +
                                     ", Formname: " + draggableData[index].formname +
@@ -1402,6 +1412,7 @@
                 }
             });
         });
+        
         $(document).ready(function () {
             //sample url input 1 = http://nivedha10.pythonanywhere.com/students
             //sample url input 2 = https://api.openweathermap.org/data/2.5/weather?q=Delhi&appid=550787ebae184c2e07cb41874e66c973

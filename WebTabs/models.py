@@ -63,8 +63,8 @@ class DraggableData(models.Model):
     y_axis = models.CharField(max_length=255, default=None)
     color = models.CharField(max_length=50, default="value")
     padding_size = models.CharField(max_length=255, default=None)
-    formid = models.CharField(max_length=100, null=True, blank=True)
-    fieldid = models.CharField(max_length=100, null=True, blank=True)
+    #formid = models.CharField(max_length=100, null=True, blank=True)
+    #fieldid = models.CharField(max_length=100, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE ,default=1)
 
     def __str__(self):
