@@ -5,7 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        .form-preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Ensure the container takes up the full height */
+        }     
+        /* Style for the navigation icons container */
+    .navigation-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px; /* Adjust as needed */
+    }
+
+    /* Style for the navigation icons */
+    .navigation-icons i {
+        font-size: 40px; /* Adjust icon size as needed */
+        cursor: pointer;
+    }
         .nav-tabs {
             background: linear-gradient(90deg, #FB37FF, #18B2DE);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -194,7 +215,7 @@
         }
 
         .dynamic-form {
-            padding-left: 8px;
+            padding-left: 300px;
             padding-top: 8px;
         }
 
@@ -220,17 +241,18 @@
 
         .grid-container {
             display: grid;
-            width: 100%;
-            height: 450px;
+            width: 1250px;
+            height: 560px;
             background: rgb(234, 234, 234);
             position: relative;
         }
 
         .grid-item {
-            border: 1px solid #4fc5da;
-            padding: 20px;
+            border: 5px solid #4fc5da;
+            padding: 20%;
+            width: 7px;
         }
-
+       
         .draggable-label {
             position: absolute;
             padding: 2px;
@@ -240,6 +262,10 @@
             font-weight: 400;
             color: black;
             margin-top: 5px;
+        }
+        .resizable {
+            resize: both;
+            overflow: auto;
         }
         #urlInput {
             width: 100%; /* You can adjust the width as needed */
@@ -359,11 +385,11 @@
             const formNameLabel = document.querySelector('label[for="fieldname1"]');
             const selectedValue = selectBox1.value;
             if (
-                selectedValue === "Select Box" ||
+                
                 selectedValue === "Varchar Field" ||
                 selectedValue === "Number Field" ||
                 selectedValue === "Password" ||
-                selectedValue === "Select Box" ||
+                selectedValue === "Quantity Box" ||
                 selectedValue === "Email" ||
                 selectedValue === "Radio Button" ||
                 selectedValue === "Calc Field" ||
@@ -387,11 +413,11 @@
             const formNameLabel2 = document.querySelector(`label[for="${formId}|field1"]`);
             const selectedValue2 = selectBox2.value;
             if (
-                selectedValue2 === "Select Box" ||
+                
                 selectedValue2 === "Varchar Field" ||
                 selectedValue2 === "Number Field" ||
                 selectedValue2 === "Password" ||
-                selectedValue2 === "Select Box" ||
+                selectedValue === "Quantity Box" ||
                 selectedValue2 === "Email" ||
                 selectedValue2 === "Radio Button" ||
                 selectedValue2 === "Calc Field" ||
@@ -434,11 +460,11 @@
             const selectedValue = selectBox3.value;
 
             if (
-                selectedValue === "Select Box" ||
+                
                 selectedValue === "Varchar Field" ||
                 selectedValue === "Number Field" ||
                 selectedValue === "Password" ||
-                selectedValue === "Select Box" ||
+                selectedValue === "Quantity Box" ||
                 selectedValue === "Email" ||
                 selectedValue === "Radio Button" ||
                 selectedValue === "Calc Field" ||
@@ -494,7 +520,7 @@
     <div class="mt-3 mx-5 p-2 text-dark">
         <div class="tab-content mt-4">
             <div class="tab-pane fade show active" id="tab1Content" role="tabpanel">
-                <div id="formsContainer">
+                <div id="formsContainer" >
                     <div>
                         <input id="searchInput" type="text" class="form-control mb-3 col-md-6"
                             placeholder="Search..." />
@@ -507,7 +533,13 @@
                         <div id="projectNameAlert" class=" alert-danger" style="display: none;"></div>
 
                     </div>
-
+                    
+                    <div class="navigation-icons">
+                        <i id="swipeLeftBtn" class="fas fa-arrow-left"></i>
+                        <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;"
+                                        type="button"><b>+</b></button>
+                        <i id="swipeRightBtn" class="fas fa-arrow-right"></i>
+                    </div>
                     <form class="dynamic-form" id="form1">
 
                         <div class="row mb-3">
@@ -522,8 +554,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control size" name="form1|redirect path"
                                         placeholder="form1 Redirect Path">
-                                    <button class="btn btn-grad ms-5 add-form" style="background-color: #92beab;"
-                                        type="button"><b>+</b></button>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -541,11 +572,12 @@
                                 <div class="input-group">
                                     <select class="form-select ms-1" id="selectBox1" name="form1|selection1"
                                         onchange="updateLabel(this)">
+                                        <option value="empty">-</option>
                                         <option value="Varchar Field">Varchar Field</option>
                                         <option value="Number Field">Number Field</option>
-                                        <option value="Password">Password</option>
                                         <option value="Select Box">Select Box</option>
-                                        <option value="Number Field">Number Field</option>
+                                        <option value="Password">Password</option>
+                                        <option value="Quantity Box">Quantity Box</option>
                                         <option value="Email">Email</option>
                                         <option value="Radio Button">Radio Button</option>
                                         <option value="Calc Field">Calc Field</option>
@@ -583,21 +615,44 @@
                 <div class="row mb-0">
                     <div class="col-md-8">
                         <!-- Submit button -->
-                        <button type="button" id="submitBtn" class="btn btn-grad1"
-                            style="margin-left:10px;">Submit</button>
-                        <button type="button" id="cancelBtn" class="btn btn-grad2 ms-2  cancel-form">Cancel</button>
+                        
+                        <button type="button" id="cancelBtn" class="btn btn-grad2 ms-2 cancel-form">Cancel</button>
                         <button type="button" class="btn btn-grad3 ms-2 Reset" style="margin-left:25px;">Reset</button>
-                        <button type="button" class="btn btn-grad4 ms-2 Preview"
-                            style="margin-left:25px;">Preview</button>
-
+                        <button type="button" class="btn btn-grad4 ms-2 Preview" style="margin-left:25px;">Preview</button>
                     </div>
+                    <div class="row mb-0">
+                        <div class="col-md-8">
+                            <!-- Submit button -->
+                            <button type="button" id="submitBtn" class="btn btn-grad1" style="margin-left:10px;">Submit</button>
+                            
+                        </div>    
+                </div>
+                
                 </div>
             </div>
             <div class="tab-pane fade" id="tab2Content">
-                <div class="grid-container" style="margin-right:100px;">
-                    <div class="grid-item"></div>
+                <div class="grid-container" style="position: relative; margin-right: 90%;">
+                    <img src="https://svgshare.com/i/eGa.svg" width="1250" height="560" style="position: absolute; top: 0; left: 0; z-index: 1;">
+                    
+                    <div class="grid-item" style="position: absolute; top: 0; left: 0; width: 1250px; height: 560px; z-index: 2;">
+                        <!-- Horizontal lines -->
+                        <div class="grid-line horizontal" style="height: 20%;"></div>
+                        <div class="grid-line horizontal" style="height: 20%;"></div>
+                        <div class="grid-line horizontal" style="height: 20%;"></div>
+                        <div class="grid-line horizontal" style="height: 20%;"></div>
+                        <div class="grid-line horizontal" style="height: 20%;"></div>
+                        
+                        <!-- Vertical lines -->
+                        <div class="grid-line vertical" style="width: 20%;"></div>
+                        <div class="grid-line vertical" style="width: 20%;"></div>
+                        <div class="grid-line vertical" style="width: 20%;"></div>
+                        <div class="grid-line vertical" style="width: 20%;"></div>
+                        <div class="grid-line vertical" style="width: 20%;"></div>
+                    </div>
                 </div>
                 <button type="button" id="okbtn" style="padding-top:5px;" class="btn btn-grad5">OK</button>
+            
+               
             </div>
             <div class="tab-pane fade" id="tab3Content">
                 <div class="container mt-3">
@@ -605,7 +660,6 @@
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-6">
                                 <h3>API Creation</h3>
-
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -613,7 +667,6 @@
                                 <label for="urlInput" class="form-label">URL</label>
                                 <input type="text" class="form-control" id="urlInput" placeholder="Enter URL">
                             </div>
-
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-6">
@@ -624,8 +677,7 @@
                     <div class="row mt-3 justify-content-center">
                         <div class="col-md-6">
                             <label for="commentBox" class="form-label">Comment</label>
-                            <textarea class="form-control resizable" id="commentBox" rows="4"
-                                placeholder="Enter your comment"></textarea>
+                            <textarea class="form-control resizable" id="commentBox" rows="4" placeholder="Enter your comment"></textarea>
                         </div>
                     </div>
                 </div>
@@ -633,14 +685,13 @@
         </div>
     </div>
 
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs"></script>
+    
     <script>
-
-
+           
         $(document).ready(function () {
             var formCounter = 1;
             function generateFormHtml(formId) {
@@ -674,11 +725,12 @@
                                         <label for="fieldType" style="margin-left:7px;padding-top:1rem;margin-bottom: 0.5rem;" id="form-name">Selection Box</label>
                                             <div class="input-group">
                                                 <select class="form-select ms-1" id="selectBox2" onchange="updateLabel1(this)" name="${formId}|selection1">
+                                                <option value="empty">-</option>
                                                 <option value="Varchar Field">Varchar Field</option>
                                                 <option value="Number Field">Number Field</option>
-                                                <option value="Password">Password</option>
                                                 <option value="Select Box">Select Box</option>
-                                                <option value="Number Field">Number Field</option>
+                                                <option value="Password">Password</option>
+                                                <option value="Quantity Box">Quantity Box</option>
                                                 <option value="Email">Email</option>
                                                 <option value="Radio Button">Radio Button</option>
                                                 <option value="Calc Field">Calc Field</option>
@@ -721,12 +773,51 @@
                     var labelType = index === 0 ? '' : (index === 1 ? 'Redirect path' : 'Field Name');
                     $(this).text(`${newFormId}  ${labelType} `);
                 });
-                $('#formsContainer').append(newForm);
-            }
+                //$('#formsContainer').append(newForm);
+                /*$('.dynamic-form').hide();
+                // Append new form horizontally
+                $('#formsContainer').css('display', 'flex').append(newForm.css('margin-left', '60px'));
 
-            function removeForm() {
-                $(this).closest(".dynamic-form").remove();
-            }
+                // Update formCounter for next form
+                formCounter++;*/
+                $('.dynamic-form').hide();
+
+                $('#formsContainer').append(newForm);
+                newForm.show();
+                        }
+                        // Swipe left handler
+                $("#swipeLeftBtn").on("click", function () {
+                    var currentForm = $(".dynamic-form:visible");
+                    var prevForm = currentForm.prev(".dynamic-form");
+                    if (prevForm.length > 0) {
+                        currentForm.hide();
+                        prevForm.show();
+                    }
+                });
+
+                // Swipe right handler
+                $("#swipeRightBtn").on("click", function () {
+                    var currentForm = $(".dynamic-form:visible");
+                    var nextForm = currentForm.next(".dynamic-form");
+                    if (nextForm.length > 0) {
+                        currentForm.hide();
+                        nextForm.show();
+                    }
+                });
+                
+                    function removeForm() {
+                        var currentForm = $(this).closest(".dynamic-form");
+                        var prevForm = currentForm.prev(".dynamic-form");
+                        currentForm.remove();
+                        if (prevForm.length > 0) {
+                            prevForm.show();
+                        }
+                    }
+
+            
+            // function removeForm() {
+            //     $(this).closest(".dynamic-form").remove();
+            // }
             $("#formsContainer").on("click", ".add-form", addForm);
             $("#formsContainer").on("click", ".remove-form", removeForm);
 
@@ -755,11 +846,12 @@
                                     <label for="${formId}-selectBox${fieldCounter}" style="margin-left:7px;padding-top:1rem;margin-bottom: 0.5rem;" id="form-name">Selection Box ${fieldCounter}</label>
                                     <div class="input-group">
                                         <select class="form-select ms-1" id="${formId}-selectBox${fieldCounter}" onchange="updateLabel2(this)" name="${formId}|selection${fieldCounter}">
+                                            <option value="empty">-</option>
                                             <option value="Varchar Field">Varchar Field</option>
                                             <option value="Number Field">Number Field</option>
-                                            <option value="Password">Password</option>
                                             <option value="Select Box">Select Box</option>
-                                            <option value="Number Field">Number Field</option>
+                                            <option value="Password">Password</option>
+                                            <option value="Quantity Box">Quantity Box</option>
                                             <option value="Email">Email</option>
                                             <option value="Radio Button">Radio Button</option>
                                             <option value="Calc Field">Calc Field</option>
@@ -1140,75 +1232,293 @@
             });
 
             $(document).ready(function () {
-                var formCounter = 1;
-                var draggableData = [];
-                var paddingChangeInterval = 5;
-                var maxPadding = 50;
-                var paddingChangeTimer;
+    var formCounter = 1;
+    var draggableData = [];
+    var paddingChangeInterval = 5;
+    var maxPadding = 50;
+    var paddingChangeTimer;
+    var $tooltip = $('<div class="tooltip"></div>').appendTo('body');
 
-                function previewFormValues() {
-                    if ($(this).hasClass('Preview')) {
-                        $("#Tab2").tab("show");
-                    }
+    function previewFormValues() {
+        if ($(this).hasClass('Preview')) {
+            $("#Tab2").tab("show");
+        }
 
-                    $(".grid-item").empty();
-                    var totalHeight = 0;
+        $(".grid-item").empty();
+        var totalHeight = 0;
 
-                    $(".dynamic-form").each(function (formIndex, form) {
-                        var formId = $(form).attr("id");
-                        var formName = $(form).find('input[name="' + formId + '"]').val().trim();
+        $(".dynamic-form").each(function (formIndex, form) {
+            var formId = $(form).attr("id");
+            var formName = $(form).find('input[name="' + formId + '"]').val().trim();
 
+            var formIdString = "form" + formCounter;
+            draggableData.push({
+                id: formIdString,
+                formname: formName,
+                posX: null,
+                posY: null,
+                padding: null,
+                backgroundColor: null
+            });
 
+            var formNameHtml = '<div class="form-name draggable-label" id="' + formIdString + '" data-id="' + formIdString + '" style="top: ' +
+                totalHeight +
+                'px; padding: 10px; background-color: lightblue;"><label>' +
+                formName +
+                "</label></div>";
+            $(".grid-item").append(formNameHtml);
+            totalHeight += 130;
 
-                        var formIdString = "form" + formCounter;
+            $(form).find('select,.dynamic-field').each(function () {
+                if ($(this).is('.dynamic-field')) {
+                    var fieldName = $(this).find('input[type="text"]').val().trim();
+                    if (fieldName !== "") {
+                        var fieldId = "field" + "name" + formCounter;
+                        var fieldValueHtml =
+                            '<div class="draggable-label form-fieldname" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                            totalHeight +
+                            'px; padding: 10px; background-color: lightblue;"><label>' +
+                            fieldName +
+                            "</label></div>";
+                        $(".grid-item").append(fieldValueHtml);
+                        totalHeight += 130;
+
                         draggableData.push({
-                            id: formIdString,
+                            id: fieldId,
                             formname: formName,
+                            fieldname: fieldName,
+                            fieldtype: "",
                             posX: null,
                             posY: null,
-                            padding: null,
-                            backgroundColor: null
+                            padding: 10,
+                            backgroundColor: "lightblue"
                         });
+                    }
+                } else if ($(this).is('select')) {
+                    var selectedFieldType = $(this).val().trim();
+                    if (selectedFieldType !== "") {
+                        var inputField = '';
 
+                        if (selectedFieldType === "Varchar Field") {
+                            inputField = '<input type="text" class="form-control" placeholder="Varchar Field" readonly ' + 'style="width: 200px;">';
+                        } else if (selectedFieldType === "Number Field") {
+                            inputField = '<input type="number" class="form-control" placeholder="Number Field" readonly ' + 'style="width: 200px;">';
+                        } else if (selectedFieldType === "Password") {
+                            inputField = '<input type="password" class="form-control" placeholder="Password" readonly style="width: 200px;">';
+                        } else if (selectedFieldType === "Select Box") {
+                            inputField = '<select class="form-select" style="width: 200px;" ><option>option1 </option> <option>option2 </option> <option>option3 </option></select>';
+                        } // Add other cases for different field types
 
-                        var formNameHtml = '<div class="form-name draggable-label" id="' + formIdString + '" style="padding: 10px; background-color: lightblue;">' + formName + '</div>';
-                        $(".grid-item").append(formNameHtml);
-                        totalHeight += 40;
+                        var fieldId = "field" + "type" + formCounter;
+                        var selectedFieldTypeHtml =
+                            '<div class="draggable-label form-fieldtype" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                            (totalHeight - 130) + // Adjust to place in the same row as field label
+                            'px;  padding: 10px; background-color: lightgreen; position :absolute;left: 800px;">' + inputField + '</div>';
 
-                        $(form).find('.dynamic-field').each(function () {
-                            var fieldName = $(this).find('input[type="text"]').val().trim();
-                            if (fieldName !== "") {
-                                var fieldId = "field" + "name" + formCounter;
-                                var fieldValueHtml =
-                                    '<div class="draggable-label form-fieldname" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
-                                    totalHeight +
-                                    'px; padding: 10px; background-color: lightblue;"><label>' +
-                                    fieldName +
-                                    "</label></div>";
-                                $(".grid-item").append(fieldValueHtml);
-                                totalHeight += 40;
+                        $(".grid-item").append(selectedFieldTypeHtml);
 
-
-                                draggableData.push({
-                                    id: fieldId,
-                                    formname: formName,
-                                    fieldname: fieldName,
-                                    fieldtype: "",
-                                    posX: null,
-                                    posY: null,
-                                    padding: 10,
-                                    backgroundColor: "lightblue"
-                                });
-                            }
+                        draggableData.push({
+                            id: fieldId,
+                            formname: formName,
+                            fieldname: "",
+                            fieldtype: selectedFieldType,
+                            posX: null,
+                            posY: null,
+                            padding: 10,
+                            backgroundColor: "lightgreen"
                         });
+                    }
+                }
+            });
 
-                        $(form).find('select').each(function () {
-                            var selectedFieldType = $(this).val().trim();
-                            if (selectedFieldType !== "") {
-                                var inputField = '';
+            formCounter++;
+        });
 
+        var minHeight = Math.max(totalHeight, 750);
+        $(".grid-container").css("min-height", minHeight + "px");
+        $(".grid-item").wrapInner('<div class="form-preview-container"></div>');
+        $(".draggable-label").draggable({
+            containment: ".grid-container",
+            scroll: false,
+            stack: ".draggable-label",
+            start: function (event, ui) {
+                clearInterval(paddingChangeTimer);
+            },
+            drag: function (event, ui) {
+                var currentPadding = parseInt($(this).css('padding'));
 
-                                if (selectedFieldType === "Varchar Field") {
+                if (currentPadding < maxPadding) {
+                    $(this).css('padding', (currentPadding) + 'px');
+                    $(this).find('.form-control').css('padding', (currentPadding) + 'px');
+                    $(this).find('.btn').css('padding', (currentPadding) + 'px');
+                    $(this).find('textarea').css('padding', (currentPadding - 10) + 'px');
+                }
+
+                $tooltip.text('X: ' + ui.position.left + ', Y: ' + ui.position.top).css({
+                    top: ui.position.top - 30,
+                    left: ui.position.left + 30,
+                    visibility: 'visible' // Make the tooltip visible
+                });
+            },
+            stop: function (event, ui) {
+                var posX = Math.round(ui.position.left / 10) * 10;
+                var posY = Math.round(ui.position.top / 10) * 10;
+                var padding = parseInt($(this).css('padding'));
+                var backgroundColor = $(this).css('background-color');
+                var dataId = $(this).attr('id');
+                var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
+                var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
+                var fieldtype = $(this).hasClass('form-fieldtype') ?
+                    $(this).find('input').attr('placeholder') ||
+                    $(this).find('select').val() ||
+                    $(this).find('textarea').attr('placeholder') ||
+                    $(this).find('Button').attr('placeholder') ||
+                    $(this).find('Video Field').attr('placeholder') ||
+                    $(this).find('Audio Field').attr('placeholder') ||
+                    $(this).find('File Field').attr('placeholder') ||
+                    $(this).find('Image').attr('placeholder') ||
+                    $(this).find('Logo').attr('placeholder') ||
+                    $(this).find('Quantity Box').attr('placeholder') ||
+                    $(this).find('Radio Button').attr('placeholder') ||
+                    $(this).find('Check Box').attr('placeholder') ||
+                    "" : "";
+
+                var index = draggableData.findIndex(item => item.id === dataId);
+                if (index !== -1) {
+                    draggableData[index].posX = posX;
+                    draggableData[index].posY = posY;
+                    draggableData[index].padding = padding;
+                    draggableData[index].backgroundColor = backgroundColor;
+                    draggableData[index].formname = formname;
+                    draggableData[index].fieldname = fieldname;
+                    draggableData[index].fieldtype = fieldtype;
+
+                    console.log("ID: " + draggableData[index].id +
+                        ", Formname: " + draggableData[index].formname +
+                        ", Fieldname: " + draggableData[index].fieldname +
+                        ", Fieldtype: " + draggableData[index].fieldtype +
+                        ", Position X: " + posX +
+                        ", Position Y: " + posY +
+                        ", Padding: " + padding +
+                        ", Background Color: " + backgroundColor);
+                } else {
+                    console.log("Error: Element with ID " + dataId + " not found in draggableData array.");
+                }
+
+                $tooltip.css('visibility', 'hidden'); // Hide the tooltip after dragging stops
+            }
+        });
+
+        $(".draggable-label").on('mousedown', function (e) {
+            var self = $(this);
+            if (e.offsetX < 10) {
+                paddingChangeTimer = setInterval(function () {
+                    var currentPadding = parseInt(self.css('padding'));
+                    if (currentPadding < maxPadding) {
+                        self.css('padding', (currentPadding + paddingChangeInterval) + 'px');
+                    }
+                }, 100);
+            } else if (e.offsetX > self.width() - 10) {
+                paddingChangeTimer = setInterval(function () {
+                    var currentPadding = parseInt(self.css('padding'));
+                    if (currentPadding > paddingChangeInterval) {
+                        self.css('padding', (currentPadding - paddingChangeInterval) + 'px');
+                    }
+                }, 100);
+            }
+        }).on('mouseup mouseleave', function () {
+            clearInterval(paddingChangeTimer);
+        });
+    }
+
+    $(".Preview").click(previewFormValues);
+
+    function collision($div1, $div2) {
+        var x1 = $div1.offset().left;
+        var y1 = $div1.offset().top;
+        var h1 = $div1.outerHeight(true);
+        var w1 = $div1.outerWidth(true);
+        var b1 = y1 + h1;
+        var r1 = x1 + w1;
+        var x2 = $div2.offset().left;
+        var y2 = $div2.offset().top;
+        var h2 = $div2.outerHeight(true);
+        var w2 = $div2.outerWidth(true);
+        var b2 = y2 + h2;
+        var r2 = x2 + w2;
+
+        if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+        return true;
+    }
+});
+$(document).ready(function () {
+    var formCounter = 1;
+    var draggableData = [];
+    var paddingChangeInterval = 5;
+    var maxPadding = 50;
+    var paddingChangeTimer;
+
+    function previewFormValues() {
+        if ($(this).hasClass('Preview')) {
+            $("#Tab2").tab("show");
+        }
+
+        $(".grid-item").empty();
+        var totalHeight = 0;
+
+        $(".dynamic-form").each(function (formIndex, form) {
+            var formId = $(form).attr("id");
+            var formName = $(form).find('input[name="' + formId + '"]').val().trim();
+
+            var formIdString = "form" + formCounter;
+            draggableData.push({
+                id: formIdString,
+                formname: formName,
+                posX: null,
+                posY: null,
+                padding: null,
+                backgroundColor: null
+            });
+
+            var formNameHtml = '<div class="form-name draggable-label" id="' + formIdString + '" data-id="' + formIdString + '" style="top: ' +
+                totalHeight +
+                'px; padding: 10px; background-color: lightblue;"><label>' +
+                formName +
+                "</label></div>";
+            $(".grid-item").append(formNameHtml);
+            totalHeight += 130;
+
+            $(form).find('select,.dynamic-field').each(function () {
+                if ($(this).is('.dynamic-field')) {
+                    var fieldName = $(this).find('input[type="text"]').val().trim();
+                    if (fieldName !== "") {
+                        var fieldId = "field" + "name" + formCounter;
+                        var fieldValueHtml =
+                            '<div class="draggable-label form-fieldname" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                            totalHeight +
+                            'px; padding: 10px; background-color: lightblue;"><label>' +
+                            fieldName +
+                            "</label></div>";
+                        $(".grid-item").append(fieldValueHtml);
+                        totalHeight += 130;
+
+                        draggableData.push({
+                            id: fieldId,
+                            formname: formName,
+                            fieldname: fieldName,
+                            fieldtype: "",
+                            posX: null,
+                            posY: null,
+                            padding: 10,
+                            backgroundColor: "lightblue"
+                        });
+                    }
+                } else if ($(this).is('select')) {
+                    var selectedFieldType = $(this).val().trim();
+                    if (selectedFieldType !== "") {
+                        var inputField = '';
+
+                        if (selectedFieldType === "Varchar Field") {
                                     inputField = '<input type="text" class="form-control" placeholder="Varchar Field" readonly ' + 'style="width: 200px;">';
                                 } else if (selectedFieldType === "Number Field") {
                                     inputField = '<input type="number" class="form-control" placeholder="Number Field" readonly ' + 'style="width: 200px;">';
@@ -1233,9 +1543,9 @@
                                 } else if (selectedFieldType === "Comment Box") {
                                     inputField = '<textarea class="form-control" rows="2" placeholder="Comment Box" readonly></textarea>';
                                 } else if (selectedFieldType === "Quantity Box") {
-                                    inputField = '<input type="number" class="form-control" placeholder="Quantity Box" readonly>';
+                                    inputField = '<input type="number" class="form-control"  placeholder="Quantity Box" readonly style="width: 200px;" >';
                                 } else if (selectedFieldType === "Button") {
-                                    inputField = '<button type="button" class="btn-primary" placeholder="Button" " disabled>Button</button>';
+                                    inputField = '<button type="button" class="btn-primary resizable" placeholder="Button" " disabled>Button</button>';
                                 } else if (selectedFieldType === "Tables") {
                                     inputField = '<table class="table" placeholder ="Table" readonly><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr></tbody></table>';
                                 } else if (selectedFieldType === "Video Field") {
@@ -1246,173 +1556,167 @@
                                     inputField = '<input type="file" placeholder="Audio Field" accept="audio/*" disabled>';
                                 }
 
-                                var fieldId = "field" + "type" + formCounter;
-                                var selectedFieldTypeHtml =
-                                    '<div class="draggable-label form-fieldtype" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
-                                    totalHeight +
-                                    'px; padding: 10px; background-color: lightgreen;">' + inputField + '</div>';
-                                $(".grid-item").append(selectedFieldTypeHtml);
-                                totalHeight += 40;
 
+                        var fieldId = "field" + "type" + formCounter;
+                        var selectedFieldTypeHtml =
+                            '<div class="draggable-label form-fieldtype" id="' + fieldId + '" data-id="' + fieldId + '" style="top: ' +
+                            (totalHeight - 130) + // Adjust to place in the same row as field label
+                            'px;  padding: 10px; background-color: lightgreen; position :absolute;left: 800px;">' + inputField + '</div>';
 
-                                draggableData.push({
-                                    id: fieldId,
-                                    formname: formName,
-                                    fieldname: "",
-                                    fieldtype: selectedFieldType,
-                                    posX: null,
-                                    posY: null,
-                                    padding: 10,
-                                    backgroundColor: "lightgreen"
-                                });
-                            }
+                        $(".grid-item").append(selectedFieldTypeHtml);
+
+                        draggableData.push({
+                            id: fieldId,
+                            formname: formName,
+                            fieldname: "",
+                            fieldtype: selectedFieldType,
+                            posX: null,
+                            posY: null,
+                            padding: 10,
+                            backgroundColor: "lightgreen"
                         });
-
-                        formCounter++;
-                    });
-
-                    var minHeight = Math.max(totalHeight, 750);
-                    $(".grid-container").css("min-height", minHeight + "px");
-
-                    $(".draggable-label").draggable({
-                        containment: ".grid-container",
-                        scroll: false,
-                        stack: ".draggable-label",
-                        start: function (event, ui) {
-                            clearInterval(paddingChangeTimer);
-                        },
-                        drag: function (event, ui) {
-                            var currentPadding = parseInt($(this).css('padding'));
-                            if (currentPadding < maxPadding) {
-                                $(this).css('padding', (currentPadding) + 'px');
-
-                                // Increase padding of child elements
-                            $(this).find('.form-control').css('padding', (currentPadding) + 'px');
-                            $(this).find('.btn').css('padding', (currentPadding) + 'px');
-                            $(this).find('textarea').css('padding', (currentPadding - 10) + 'px');
-
-                            }
-                        },
-                        stop: function (event, ui) {
-
-                            var posX = ui.position.left;
-                            var posY = ui.position.top;
-                            var padding = parseInt($(this).css('padding'));
-                            var backgroundColor = $(this).css('background-color');
-                            var dataId = $(this).attr('id');
-                            var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
-                            var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
-                            var fieldtype = $(this).hasClass('form-fieldtype') ?
-                                $(this).find('input').attr('placeholder') ||
-                                $(this).find('select').val() ||
-                                $(this).find('textarea').attr('placeholder') ||
-                                $(this).find('Button').attr('placeholder') ||
-                                $(this).find('Video Field').attr('placeholder') ||
-                                $(this).find('Audio Field').attr('placeholder') ||
-                                $(this).find('File Field').attr('placeholder') ||
-                                $(this).find('Image').attr('placeholder') ||
-                                $(this).find('Logo').attr('placeholder') ||
-                                $(this).find('Quantity Box').attr('placeholder') ||
-                                $(this).find('Radio Button').attr('placeholder') ||
-                                $(this).find('Check Box').attr('placeholder') ||
-                                "" : "";
-
-
-                            var index = draggableData.findIndex(item => item.id === dataId);
-                            if (index !== -1) {
-                                draggableData[index].posX = posX;
-                                draggableData[index].posY = posY;
-                                draggableData[index].padding = padding;
-                                draggableData[index].backgroundColor = backgroundColor;
-                                draggableData[index].formname = formname;
-                                draggableData[index].fieldname = fieldname;
-                                draggableData[index].fieldtype = fieldtype;
-
-
-                                // if ($(this).hasClass('form-name')) {
-                                //     draggableData[index].formname = $(this).text().trim();
-
-                                // } else if ($(this).hasClass('form-fieldname')) {
-                                //     draggableData[index].fieldname = $(this).text().trim();
-
-                                // } else if ($(this).hasClass('form-fieldtype')) {
-                                //     draggableData[index].fieldtype = $(this).text().trim();
-
-                                // }
-
-                                console.log("ID: " + draggableData[index].id +
-                                    ", Formname: " + draggableData[index].formname +
-                                    ", Fieldname: " + draggableData[index].fieldname +
-                                    ", Fieldtype: " + draggableData[index].fieldtype +
-                                    ", Position X: " + posX +
-                                    ", Position Y: " + posY +
-                                    ", Padding: " + padding +
-                                    ", Background Color: " + backgroundColor);
-                            }
-                            else {
-                                console.log("Error: Element with ID " + dataId + " not found in draggableData array.");
-                            }
-
-
-                            $(".draggable-label").not(this).each(function () {
-                                if (collision($(ui.helper), $(this))) {
-                                    $(ui.helper).css({
-                                        top: ui.originalPosition.top,
-                                        left: ui.originalPosition.left
-                                    });
-                                    return false;
-                                }
-                            });
-                        }
-                    });
-
-
-                    $(".draggable-label").on('mousedown', function (e) {
-                        var self = $(this);
-                        if (e.offsetX < 10) {
-                            paddingChangeTimer = setInterval(function () {
-                                var currentPadding = parseInt(self.css('padding'));
-                                if (currentPadding < maxPadding) {
-                                    self.css('padding', (currentPadding + paddingChangeInterval) + 'px');
-
-                                }
-                            }, 100);
-                        } else if (e.offsetX > self.width() - 10) {
-                            paddingChangeTimer = setInterval(function () {
-                                var currentPadding = parseInt(self.css('padding'));
-                                if (currentPadding > paddingChangeInterval) {
-                                    self.css('padding', (currentPadding - paddingChangeInterval) + 'px');
-
-                                }
-                            }, 100);
-                        }
-                    }).on('mouseup mouseleave', function () {
-                        clearInterval(paddingChangeTimer);
-                    });
-                }
-
-                $(".Preview").click(previewFormValues);
-
-                function collision($div1, $div2) {
-                    var x1 = $div1.offset().left;
-                    var y1 = $div1.offset().top;
-                    var h1 = $div1.outerHeight(true);
-                    var w1 = $div1.outerWidth(true);
-                    var b1 = y1 + h1;
-                    var r1 = x1 + w1;
-                    var x2 = $div2.offset().left;
-                    var y2 = $div2.offset().top;
-                    var h2 = $div2.outerHeight(true);
-                    var w2 = $div2.outerWidth(true);
-                    var b2 = y2 + h2;
-                    var r2 = x2 + w2;
-
-                    if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
-                    return true;
+                    }
                 }
             });
+
+            formCounter++;
         });
-        
+
+        var minHeight = Math.max(totalHeight, 750);
+        $(".grid-container").css("min-height", minHeight + "px");
+        $(".grid-item").wrapInner('<div class="form-preview-container"></div>');
+        $(".draggable-label").draggable({
+            containment: ".grid-container",
+            scroll: false,
+            stack: ".draggable-label",
+            start: function (event, ui) {
+                clearInterval(paddingChangeTimer);
+                $(this).append('<div class="coordinates">X: ' + ui.position.left + ', Y: ' + ui.position.top + '</div>');
+            },
+            drag: function (event, ui) {
+                var currentPadding = parseInt($(this).css('padding'));
+                var newX = Math.round(ui.position.left / 10) * 10;
+                var newY = Math.round(ui.position.top / 10) * 10;
+                ui.position.left = newX;
+                ui.position.top = newY;
+
+                // Update coordinates text
+                $(this).find('.coordinates').text('X: ' + newX + ', Y: ' + newY);
+
+                if (currentPadding < maxPadding) {
+                    $(this).css('padding', (currentPadding) + 'px');
+                    $(this).find('.form-control').css('padding', (currentPadding) + 'px');
+                    $(this).find('.btn').css('padding', (currentPadding) + 'px');
+                    $(this).find('textarea').css('padding', (currentPadding - 10) + 'px');
+                }
+            },
+            stop: function (event, ui) {
+                var newX = Math.round(ui.position.left / 10) * 10;
+                var newY = Math.round(ui.position.top / 10) * 10;
+                ui.position.left = newX;
+                ui.position.top = newY;
+
+                var posX = newX;
+                var posY = newY;
+                var padding = parseInt($(this).css('padding'));
+                var backgroundColor = $(this).css('background-color');
+                var dataId = $(this).attr('id');
+                var formname = $(this).hasClass('form-name') ? $(this).text().trim() : "";
+                var fieldname = $(this).hasClass('form-fieldname') ? $(this).text().trim() : "";
+                var fieldtype = $(this).hasClass('form-fieldtype') ?
+                    $(this).find('input').attr('placeholder') ||
+                    $(this).find('select').val() ||
+                    $(this).find('textarea').attr('placeholder') ||
+                    $(this).find('Button').attr('placeholder') ||
+                    $(this).find('Video Field').attr('placeholder') ||
+                    $(this).find('Audio Field').attr('placeholder') ||
+                    $(this).find('File Field').attr('placeholder') ||
+                    $(this).find('Image').attr('placeholder') ||
+                    $(this).find('Logo').attr('placeholder') ||
+                    $(this).find('Quantity Box').attr('placeholder') ||
+                    $(this).find('Radio Button').attr('placeholder') ||
+                    $(this).find('Check Box').attr('placeholder') ||
+                    "" : "";
+
+                var index = draggableData.findIndex(item => item.id === dataId);
+                if (index !== -1) {
+                    draggableData[index].posX = posX;
+                    draggableData[index].posY = posY;
+                    draggableData[index].padding = padding;
+                    draggableData[index].backgroundColor = backgroundColor;
+                    draggableData[index].formname = formname;
+                    draggableData[index].fieldname = fieldname;
+                    draggableData[index].fieldtype = fieldtype;
+
+                    console.log("ID: " + draggableData[index].id +
+                        ", Formname: " + draggableData[index].formname +
+                        ", Fieldname: " + draggableData[index].fieldname +
+                        ", Fieldtype: " + draggableData[index].fieldtype +
+                        ", Position X: " + posX +
+                        ", Position Y: " + posY +
+                        ", Padding: " + padding +
+                        ", Background Color: " + backgroundColor);
+                } else {
+                    console.log("Error: Element with ID " + dataId + " not found in draggableData array.");
+                }
+
+                $(".coordinates").remove();
+
+                $(".draggable-label").not(this).each(function () {
+                    if (collision($(ui.helper), $(this))) {
+                        $(ui.helper).css({
+                            top: ui.originalPosition.top,
+                            left: ui.originalPosition.left
+                        });
+                        return false;
+                    }
+                });
+            }
+        });
+
+        $(".draggable-label").on('mousedown', function (e) {
+            var self = $(this);
+            if (e.offsetX < 10) {
+                paddingChangeTimer = setInterval(function () {
+                    var currentPadding = parseInt(self.css('padding'));
+                    if (currentPadding < maxPadding) {
+                        self.css('padding', (currentPadding + paddingChangeInterval) + 'px');
+                    }
+                }, 100);
+            } else if (e.offsetX > self.width() - 10) {
+                paddingChangeTimer = setInterval(function () {
+                    var currentPadding = parseInt(self.css('padding'));
+                    if (currentPadding > paddingChangeInterval) {
+                        self.css('padding', (currentPadding - paddingChangeInterval) + 'px');
+                    }
+                }, 100);
+            }
+        }).on('mouseup mouseleave', function () {
+            clearInterval(paddingChangeTimer);
+        });
+    }
+
+    $(".Preview").click(previewFormValues);
+
+    function collision($div1, $div2) {
+        var x1 = $div1.offset().left;
+        var y1 = $div1.offset().top;
+        var h1 = $div1.outerHeight(true);
+        var w1 = $div1.outerWidth(true);
+        var b1 = y1 + h1;
+        var r1 = x1 + w1;
+        var x2 = $div2.offset().left;
+        var y2 = $div2.offset().top;
+        var h2 = $div2.outerHeight(true);
+        var w2 = $div2.outerWidth(true);
+        var b2 = y2 + h2;
+        var r2 = x2 + w2;
+
+        if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+        return true;
+    }
+});
+        });
         $(document).ready(function () {
             //sample url input 1 = http://nivedha10.pythonanywhere.com/students
             //sample url input 2 = https://api.openweathermap.org/data/2.5/weather?q=Delhi&appid=550787ebae184c2e07cb41874e66c973
